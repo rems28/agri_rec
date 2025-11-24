@@ -126,7 +126,7 @@ $interventions = $db->query('SELECT ie.*, p.nom as parcelle_nom, e.nom as engrai
             <?php endwhile; ?>
         </select>
         <input type="date" name="date" required>
-        <input type="number" name="quantite" placeholder="Quantité" required>
+        <input type="number" name="quantite" placeholder="Quantité totale" required>
         <input type="number" name="annee_culturale" min="<?php echo date("Y") -
             1; ?>" max="<?php echo date("Y") +
     3; ?>" step="1" value="<?php echo date(
@@ -143,7 +143,7 @@ $interventions = $db->query('SELECT ie.*, p.nom as parcelle_nom, e.nom as engrai
             <th>Parcelle</th>
             <th>Engrais</th>
             <th>Unité</th>
-            <th>Quantité</th>
+            <th>Quantité totale</th>
             <th>Actions</th>
         </tr>
         <?php while (
@@ -192,7 +192,7 @@ $interventions = $db->query('SELECT ie.*, p.nom as parcelle_nom, e.nom as engrai
                     <td>Parcelle</td>
                     <td>Engrais</td>
                     <td>Date</td>
-                    <td>Quantité</td>
+                    <td>Quantité totale</td>
                     <td>Année culturale</td>
                 </tr>
                 <tr>

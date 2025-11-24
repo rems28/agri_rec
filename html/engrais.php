@@ -104,12 +104,12 @@ $engrais = $db->query("SELECT * FROM engrais");
         <input type="hidden" name="action" value="create">
         <input type="text" name="nom" placeholder="Nom de l'engrais" required>
         <input type="text" name="unite" placeholder="Unité" required>
-        <input type="number" name="NO3" step="0.001" placeholder="NO3" required>
-        <input type="number" name="P2O5" step="0.001" placeholder="P2O5" required>
-        <input type="number" name="K2O" step="0.001" placeholder="K2O" required>
-        <input type="number" name="SO3" step="0.001" placeholder="SO3" required>
-        <input type="number" name="MgO" step="0.001" placeholder="MgO" required>
-        <input type="number" name="CaO" step="0.001" placeholder="CaO" required>
+        <input type="number" name="NO3" step="0.001" placeholder="% NO3" required>
+        <input type="number" name="P2O5" step="0.001" placeholder="% P2O5" required>
+        <input type="number" name="K2O" step="0.001" placeholder="% K2O" required>
+        <input type="number" name="SO3" step="0.001" placeholder="% SO3" required>
+        <input type="number" name="MgO" step="0.001" placeholder="% MgO" required>
+        <input type="number" name="CaO" step="0.001" placeholder="% CaO" required>
         <input type="submit" value="Ajouter">
     </form>
 
@@ -118,12 +118,12 @@ $engrais = $db->query("SELECT * FROM engrais");
         <tr>
             <th>Nom</th>
             <th>Unité</th>
-            <th>NO3</th>
-            <th>P2O5</th>
-            <th>K2O</th>
-            <th>SO3</th>
-            <th>MgO</th>
-            <th>CaO</th>
+            <th>% NO3</th>
+            <th>% P2O5</th>
+            <th>% K2O</th>
+            <th>% SO3</th>
+            <th>% MgO</th>
+            <th>% CaO</th>
             <th>Actions</th>
         </tr>
         <?php while ($engrais_item = $engrais->fetchArray(SQLITE3_ASSOC)): ?>
@@ -164,12 +164,12 @@ $engrais = $db->query("SELECT * FROM engrais");
                 <tr>
                     <td>Nom</td>
                     <td>Unité</td>
-                    <td>NO3</td>
-                    <td>P2O5</td>
-                    <td>K2O</td>
-                    <td>SO3</td>
-                    <td>MgO</td>
-                    <td>CaO</td>
+                    <td>% NO3</td>
+                    <td>% P2O5</td>
+                    <td>% K2O</td>
+                    <td>% SO3</td>
+                    <td>% MgO</td>
+                    <td>% CaO</td>
                 </tr>
                 <tr>
                     <td><input type="text" name="nom" id="update_nom" required></td>
