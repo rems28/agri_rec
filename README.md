@@ -1,6 +1,6 @@
 ## agri_rec s'installe simplement dans le DocumentRoot de votre serveur Web.
 
-### Ce projet fonctionne correctement sur Debian 12 et PHP 8.2.
+### Ce projet fonctionne correctement sur Debian 13 et PHP 8.4.
 
 ### En cas d'exposition extérieure à votre réseau local, veuillez à vous assurer de configurer votre serveur Web pour que la communication soit sécurisée.
 
