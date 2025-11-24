@@ -1,16 +1,17 @@
 <?php
 session_start();
-require_once 'includes/db.php';
+require_once "includes/db.php";
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
 }
 
 $db = getDB();
 
 // Fonction pour nettoyer les entrées
-function clean_input($data) {
+function clean_input($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
@@ -18,44 +19,48 @@ function clean_input($data) {
 }
 
 // Traitement du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action'])) {
-        switch ($_POST['action']) {
-            case 'create':
-                $nom = clean_input($_POST['nom']);
-                $ilot = intval($_POST['ilot']);
-                $surface = floatval($_POST['surface']);
-                $culture = clean_input($_POST['culture']);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["action"])) {
+        switch ($_POST["action"]) {
+            case "create":
+                $nom = clean_input($_POST["nom"]);
+                $ilot = intval($_POST["ilot"]);
+                $surface = floatval($_POST["surface"]);
+                $culture = clean_input($_POST["culture"]);
 
-                $stmt = $db->prepare('INSERT INTO parcelles (nom, ilot, surface, culture) VALUES (:nom, :ilot, :surface, :culture)');
-                $stmt->bindValue(':nom', $nom, SQLITE3_TEXT);
-                $stmt->bindValue(':ilot', $ilot, SQLITE3_INTEGER);
-                $stmt->bindValue(':surface', $surface, SQLITE3_FLOAT);
-                $stmt->bindValue(':culture', $culture, SQLITE3_TEXT);
+                $stmt = $db->prepare(
+                    "INSERT INTO parcelles (nom, ilot, surface, culture) VALUES (:nom, :ilot, :surface, :culture)",
+                );
+                $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
+                $stmt->bindValue(":ilot", $ilot, SQLITE3_INTEGER);
+                $stmt->bindValue(":surface", $surface, SQLITE3_FLOAT);
+                $stmt->bindValue(":culture", $culture, SQLITE3_TEXT);
                 $stmt->execute();
                 break;
 
-            case 'update':
-                $id = intval($_POST['id']);
-                $nom = clean_input($_POST['nom']);
-                $ilot = intval($_POST['ilot']);
-                $surface = floatval($_POST['surface']);
-                $culture = clean_input($_POST['culture']);
-                
-                $stmt = $db->prepare('UPDATE parcelles SET nom = :nom, ilot = :ilot, surface = :surface, culture = :culture WHERE id = :id');
-                $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
-                $stmt->bindValue(':nom', $nom, SQLITE3_TEXT);
-                $stmt->bindValue(':ilot', $ilot, SQLITE3_INTEGER);
-                $stmt->bindValue(':surface', $surface, SQLITE3_FLOAT);
-                $stmt->bindValue(':culture', $culture, SQLITE3_TEXT);
+            case "update":
+                $id = intval($_POST["id"]);
+                $nom = clean_input($_POST["nom"]);
+                $ilot = intval($_POST["ilot"]);
+                $surface = floatval($_POST["surface"]);
+                $culture = clean_input($_POST["culture"]);
+
+                $stmt = $db->prepare(
+                    "UPDATE parcelles SET nom = :nom, ilot = :ilot, surface = :surface, culture = :culture WHERE id = :id",
+                );
+                $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
+                $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
+                $stmt->bindValue(":ilot", $ilot, SQLITE3_INTEGER);
+                $stmt->bindValue(":surface", $surface, SQLITE3_FLOAT);
+                $stmt->bindValue(":culture", $culture, SQLITE3_TEXT);
                 $stmt->execute();
                 break;
 
-            case 'delete':
-                $id = intval($_POST['id']);
-                
-                $stmt = $db->prepare('DELETE FROM parcelles WHERE id = :id');
-                $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+            case "delete":
+                $id = intval($_POST["id"]);
+
+                $stmt = $db->prepare("DELETE FROM parcelles WHERE id = :id");
+                $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
                 $stmt->execute();
                 break;
         }
@@ -63,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Récupération des parcelles
-$parcelles = $db->query('SELECT * FROM parcelles');
-
+$parcelles = $db->query("SELECT * FROM parcelles");
 ?>
 
 <!DOCTYPE html>
@@ -108,17 +112,23 @@ $parcelles = $db->query('SELECT * FROM parcelles');
         </tr>
         <?php while ($parcelle = $parcelles->fetchArray(SQLITE3_ASSOC)): ?>
         <tr>
-            <td><?php echo htmlspecialchars_decode($parcelle['nom']); ?></td>
-            <td><?php echo htmlspecialchars($parcelle['ilot']); ?></td>
-            <td><?php echo htmlspecialchars($parcelle['surface']); ?></td>
-            <td><?php echo htmlspecialchars_decode($parcelle['culture']); ?></td>
+            <td><?php echo htmlspecialchars_decode($parcelle["nom"]); ?></td>
+            <td><?php echo htmlspecialchars($parcelle["ilot"]); ?></td>
+            <td><?php echo htmlspecialchars($parcelle["surface"]); ?></td>
+            <td><?php echo htmlspecialchars_decode(
+                $parcelle["culture"],
+            ); ?></td>
             <td>
                 <form method="post" style="display:inline;">
                     <input type="hidden" name="action" value="delete">
-                    <input type="hidden" name="id" value="<?php echo $parcelle['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $parcelle[
+                        "id"
+                    ]; ?>">
                     <input type="submit" value="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette parcelle ?');">
                 </form>
-                <button onclick="showUpdateForm(<?php echo htmlspecialchars(json_encode($parcelle)); ?>)">Modifier</button>
+                <button onclick="showUpdateForm(<?php echo htmlspecialchars(
+                    json_encode($parcelle),
+                ); ?>)">Modifier</button>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -130,10 +140,21 @@ $parcelles = $db->query('SELECT * FROM parcelles');
         <form method="post">
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="id" id="update_id">
-            <input type="text" name="nom" id="update_nom" required>
-            <input type="number" name="ilot" id="update_ilot" step="1" required>
-            <input type="number" name="surface" id="update_surface" step="0.01" required>
-            <input type="text" name="culture" id="update_culture" required>
+            <table>
+                <tr>
+                    <td>Nom</td>
+                    <td>Ilot</td>
+                    <td>Surface</td>
+                    <td>Culture</td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="nom" id="update_nom" required></td>
+                    <td><input type="number" name="ilot" id="update_ilot" step="1" required></td>
+                    <td><input type="number" name="surface" id="update_surface" step="0.01" required></td>
+                    <td><input type="text" name="culture" id="update_culture" required></td>
+                </tr>
+            </table>
+
             <input type="submit" value="Modifier">
         </form>
     </div>
@@ -149,6 +170,6 @@ $parcelles = $db->query('SELECT * FROM parcelles');
         document.getElementById('update_culture').value = htmlSpecialCharsDecode(parcelle.culture);
     }
     </script>
-    
+
 </body>
 </html>

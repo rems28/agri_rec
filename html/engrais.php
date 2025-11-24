@@ -1,79 +1,84 @@
 <?php
 session_start();
-require_once 'includes/db.php';
+require_once "includes/db.php";
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
 }
 
 $db = getDB();
 
-function clean_input($data) {
+function clean_input($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action'])) {
-        switch ($_POST['action']) {
-            case 'create':
-                $nom = clean_input($_POST['nom']);
-                $unite = clean_input($_POST['unite']);
-                $NO3 = floatval($_POST['NO3']);
-                $P2O5 = floatval($_POST['P2O5']);
-                $K2O = floatval($_POST['K2O']);
-                $SO3 = floatval($_POST['SO3']);
-                $MgO = floatval($_POST['MgO']);
-                $CaO = floatval($_POST['CaO']);
-                
-                $stmt = $db->prepare('INSERT INTO engrais (nom, unite, NO3, P2O5, K2O, SO3, MgO, CaO) VALUES (:nom, :unite, :NO3, :P2O5, :K2O, :SO3, :MgO, :CaO)');
-                $stmt->bindValue(':nom', $nom, SQLITE3_TEXT);
-                $stmt->bindValue(':unite', $unite, SQLITE3_TEXT);
-                $stmt->bindValue(':NO3', $NO3, SQLITE3_FLOAT);
-                $stmt->bindValue(':P2O5', $P2O5, SQLITE3_FLOAT);
-                $stmt->bindValue(':K2O', $K2O, SQLITE3_FLOAT);
-                $stmt->bindValue(':SO3', $SO3, SQLITE3_FLOAT);
-                $stmt->bindValue(':MgO', $MgO, SQLITE3_FLOAT);
-                $stmt->bindValue(':CaO', $CaO, SQLITE3_FLOAT);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["action"])) {
+        switch ($_POST["action"]) {
+            case "create":
+                $nom = clean_input($_POST["nom"]);
+                $unite = clean_input($_POST["unite"]);
+                $NO3 = floatval($_POST["NO3"]);
+                $P2O5 = floatval($_POST["P2O5"]);
+                $K2O = floatval($_POST["K2O"]);
+                $SO3 = floatval($_POST["SO3"]);
+                $MgO = floatval($_POST["MgO"]);
+                $CaO = floatval($_POST["CaO"]);
+
+                $stmt = $db->prepare(
+                    "INSERT INTO engrais (nom, unite, NO3, P2O5, K2O, SO3, MgO, CaO) VALUES (:nom, :unite, :NO3, :P2O5, :K2O, :SO3, :MgO, :CaO)",
+                );
+                $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
+                $stmt->bindValue(":unite", $unite, SQLITE3_TEXT);
+                $stmt->bindValue(":NO3", $NO3, SQLITE3_FLOAT);
+                $stmt->bindValue(":P2O5", $P2O5, SQLITE3_FLOAT);
+                $stmt->bindValue(":K2O", $K2O, SQLITE3_FLOAT);
+                $stmt->bindValue(":SO3", $SO3, SQLITE3_FLOAT);
+                $stmt->bindValue(":MgO", $MgO, SQLITE3_FLOAT);
+                $stmt->bindValue(":CaO", $CaO, SQLITE3_FLOAT);
                 $stmt->execute();
                 break;
 
-            case 'update':
-                $id = intval($_POST['id']);
-                $nom = clean_input($_POST['nom']);
-                $unite = clean_input($_POST['unite']);
-                $NO3 = floatval($_POST['NO3']);
-                $P2O5 = floatval($_POST['P2O5']);
-                $K2O = floatval($_POST['K2O']);
-                $SO3 = floatval($_POST['SO3']);
-                $MgO = floatval($_POST['MgO']);
-                $CaO = floatval($_POST['CaO']);
-                
-                $stmt = $db->prepare('UPDATE engrais SET nom = :nom, unite = :unite, NO3 = :NO3, P2O5 = :P2O5, K2O = :K2O, SO3 = :SO3, MgO = :MgO, CaO = :CaO WHERE id = :id');
-                $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
-                $stmt->bindValue(':nom', $nom, SQLITE3_TEXT);
-                $stmt->bindValue(':unite', $unite, SQLITE3_TEXT);
-                $stmt->bindValue(':NO3', $NO3, SQLITE3_FLOAT);
-                $stmt->bindValue(':P2O5', $P2O5, SQLITE3_FLOAT);
-                $stmt->bindValue(':K2O', $K2O, SQLITE3_FLOAT);
-                $stmt->bindValue(':SO3', $SO3, SQLITE3_FLOAT);
-                $stmt->bindValue(':MgO', $MgO, SQLITE3_FLOAT);
-                $stmt->bindValue(':CaO', $CaO, SQLITE3_FLOAT);
+            case "update":
+                $id = intval($_POST["id"]);
+                $nom = clean_input($_POST["nom"]);
+                $unite = clean_input($_POST["unite"]);
+                $NO3 = floatval($_POST["NO3"]);
+                $P2O5 = floatval($_POST["P2O5"]);
+                $K2O = floatval($_POST["K2O"]);
+                $SO3 = floatval($_POST["SO3"]);
+                $MgO = floatval($_POST["MgO"]);
+                $CaO = floatval($_POST["CaO"]);
+
+                $stmt = $db->prepare(
+                    "UPDATE engrais SET nom = :nom, unite = :unite, NO3 = :NO3, P2O5 = :P2O5, K2O = :K2O, SO3 = :SO3, MgO = :MgO, CaO = :CaO WHERE id = :id",
+                );
+                $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
+                $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
+                $stmt->bindValue(":unite", $unite, SQLITE3_TEXT);
+                $stmt->bindValue(":NO3", $NO3, SQLITE3_FLOAT);
+                $stmt->bindValue(":P2O5", $P2O5, SQLITE3_FLOAT);
+                $stmt->bindValue(":K2O", $K2O, SQLITE3_FLOAT);
+                $stmt->bindValue(":SO3", $SO3, SQLITE3_FLOAT);
+                $stmt->bindValue(":MgO", $MgO, SQLITE3_FLOAT);
+                $stmt->bindValue(":CaO", $CaO, SQLITE3_FLOAT);
                 $stmt->execute();
                 break;
 
-            case 'delete':
-                $id = intval($_POST['id']);
-                
-                $stmt = $db->prepare('DELETE FROM engrais WHERE id = :id');
-                $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+            case "delete":
+                $id = intval($_POST["id"]);
+
+                $stmt = $db->prepare("DELETE FROM engrais WHERE id = :id");
+                $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
                 $stmt->execute();
                 break;
         }
     }
 }
 
-$engrais = $db->query('SELECT * FROM engrais');
+$engrais = $db->query("SELECT * FROM engrais");
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +90,7 @@ $engrais = $db->query('SELECT * FROM engrais');
     <link rel="stylesheet" href="includes/style.css">
 </head>
 <body>
- 
+
     <h3> Navigation dans les pages de gestion </h3>
     <ul>
         <li><a href="interventions_engrais.php">Création d'une intervention engrais</a></li>
@@ -123,21 +128,27 @@ $engrais = $db->query('SELECT * FROM engrais');
         </tr>
         <?php while ($engrais_item = $engrais->fetchArray(SQLITE3_ASSOC)): ?>
         <tr>
-            <td><?php echo htmlspecialchars_decode($engrais_item['nom']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['unite']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['NO3']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['P2O5']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['K2O']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['SO3']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['MgO']); ?></td>
-            <td><?php echo htmlspecialchars($engrais_item['CaO']); ?></td>
+            <td><?php echo htmlspecialchars_decode(
+                $engrais_item["nom"],
+            ); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["unite"]); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["NO3"]); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["P2O5"]); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["K2O"]); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["SO3"]); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["MgO"]); ?></td>
+            <td><?php echo htmlspecialchars($engrais_item["CaO"]); ?></td>
             <td>
                 <form method="post" style="display:inline;">
                     <input type="hidden" name="action" value="delete">
-                    <input type="hidden" name="id" value="<?php echo $engrais_item['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $engrais_item[
+                        "id"
+                    ]; ?>">
                     <input type="submit" value="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet engrais ?');">
                 </form>
-                <button onclick="showUpdateForm(<?php echo htmlspecialchars(json_encode($engrais_item)); ?>)">Modifier</button>
+                <button onclick="showUpdateForm(<?php echo htmlspecialchars(
+                    json_encode($engrais_item),
+                ); ?>)">Modifier</button>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -148,14 +159,30 @@ $engrais = $db->query('SELECT * FROM engrais');
         <form method="post">
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="id" id="update_id">
-            <input type="text" name="nom" id="update_nom" required>
-            <input type="text" name="unite" id="update_unite" required>
-            <input type="number" name="NO3" id="update_NO3" step="0.001" required>
-            <input type="number" name="P2O5" id="update_P2O5" step="0.001" required>
-            <input type="number" name="K2O" id="update_K2O" step="0.001" required>
-            <input type="number" name="SO3" id="update_SO3" step="0.001" required>
-            <input type="number" name="MgO" id="update_MgO" step="0.001" required>
-            <input type="number" name="CaO" id="update_CaO" step="0.001" required>
+
+            <table>
+                <tr>
+                    <td>Nom</td>
+                    <td>Unité</td>
+                    <td>NO3</td>
+                    <td>P2O5</td>
+                    <td>K2O</td>
+                    <td>SO3</td>
+                    <td>MgO</td>
+                    <td>CaO</td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="nom" id="update_nom" required></td>
+                    <td><input type="text" name="unite" id="update_unite" required></td>
+                    <td><input type="number" name="NO3" id="update_NO3" step="0.001" required></td>
+                    <td><input type="number" name="P2O5" id="update_P2O5" step="0.001" required></td>
+                    <td><input type="number" name="K2O" id="update_K2O" step="0.001" required></td>
+                    <td><input type="number" name="SO3" id="update_SO3" step="0.001" required></td>
+                    <td><input type="number" name="MgO" id="update_MgO" step="0.001" required></td>
+                    <td><input type="number" name="CaO" id="update_CaO" step="0.001" required></td>
+                </tr>
+            </table>
+
             <input type="submit" value="Modifier">
         </form>
     </div>
@@ -175,6 +202,6 @@ $engrais = $db->query('SELECT * FROM engrais');
         document.getElementById('update_CaO').value = engrais.CaO;
     }
     </script>
-    
+
 </body>
 </html>
