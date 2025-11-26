@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db->exec("CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
+        entity TEXT NOT NULL,
         telepac INTEGER NOT NULL,
         password TEXT NOT NULL
     )");
@@ -78,11 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     )");
 
     $username = htmlspecialchars(stripslashes(trim($_POST['username'])));
+    $entity = htmlspecialchars(stripslashes(trim($_POST['entity'])));
     $telepac = htmlspecialchars(stripslashes(trim($_POST['telepac'])));
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-$stmt = $db->prepare('INSERT OR IGNORE INTO users (username, telepac, password) VALUES (:username, :telepac, :password)');
+$stmt = $db->prepare('INSERT OR IGNORE INTO users (username, entity, telepac, password) VALUES (:username, :entity, :telepac, :password)');
 $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+$stmt->bindValue(':entity', $entity, SQLITE3_TEXT);
 $stmt->bindValue(':telepac', $telepac, SQLITE3_TEXT);
 $stmt->bindValue(':password', $password, SQLITE3_TEXT);
 $stmt->execute();
@@ -107,6 +110,8 @@ exit;
     <?php if (isset($error)) echo "<p>$error</p>"; ?>
     <form method="post">
         <input type="text" name="username" placeholder="Nom d'utilisateur" required><br>
+        <br/>
+        <input type="text" name="entity" placeholder="Nom de société" required><br>
         <br/>
         <input type="text" name="telepac" placeholder="Code telepac" required><br>
         <br/>

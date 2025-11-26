@@ -35,7 +35,7 @@ $query = "
         dip.volume_total,
         round((dip.volume_total / p.surface), 2) AS volume_par_ha,
         dip.cible AS cible,
-        u.username,
+        u.entity,
         u.telepac
     FROM
         interventions_phytosanitaires ip, users u
@@ -84,7 +84,7 @@ try {
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $key = $row['annee_culturale'] . '_' . $row['parcelle_id'];
 
-        $username = $row['username'];
+        $entity = $row['entity'];
         $telepac = $row['telepac'];
 
         if (!isset($interventions[$key])) {
@@ -154,7 +154,7 @@ $total_pages = ceil($total_interventions / $limit);
         <li><a href="index.php">Retour à l'accueil</a></li>
     </ul>
     <h1>Rapport des interventions phytosanitaires</h1>
-    <h2><?php echo $username; ?> - Telepac: <?php echo $telepac; ?></h2>
+    <h2><?php echo $entity; ?> - Telepac: <?php echo $telepac; ?></h2>
     <br>
     <!-- Formulaire de tri -->
     <form method="get">
