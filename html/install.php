@@ -18,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         entity TEXT NOT NULL,
-        telepac TEXT NOT NULL,
-        siret TEXT NOT NULL,
+        telepac INTEGER NOT NULL,
         password TEXT NOT NULL
     )");
 
@@ -85,11 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telepac = htmlspecialchars(stripslashes(trim($_POST['telepac'])));
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-$stmt = $db->prepare('INSERT OR IGNORE INTO users (username, entity, telepac, siret, password) VALUES (:username, :entity, :telepac, :siret, :password)');
+$stmt = $db->prepare('INSERT OR IGNORE INTO users (username, entity, telepac, password) VALUES (:username, :entity, :telepac, :password)');
 $stmt->bindValue(':username', $username, SQLITE3_TEXT);
 $stmt->bindValue(':entity', $entity, SQLITE3_TEXT);
 $stmt->bindValue(':telepac', $telepac, SQLITE3_TEXT);
-$stmt->bindValue(':siret', $siret, SQLITE3_TEXT);
 $stmt->bindValue(':password', $password, SQLITE3_TEXT);
 $stmt->execute();
 
@@ -202,12 +200,6 @@ else: ?>
                 <div style="text-align: left; margin-bottom: 1.5rem;">
                     <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N° de
                         compte Telepac</label>
-                    <input type="text" name="telepac" placeholder="ex: 0123456" required style="width:100%;">
-                </div>
-
-                <div style="text-align: left; margin-bottom: 1.5rem;">
-                    <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N° de
-                        SIRET</label>
                     <input type="text" name="telepac" placeholder="ex: 0123456" required style="width:100%;">
                 </div>
 
