@@ -269,6 +269,14 @@ endwhile; ?>
         document.getElementById('updateFormBackdrop').style.display = 'none';
       }
 
+      window.addEventListener("message", function(event) {
+        if (event.origin !== window.location.origin) return;
+
+        if (event.data === "produits_termines") {
+            window.location.reload();
+        }
+      });
+
       function ouvrirPopupProduits() {
         document.getElementById("popupProduits").style.display = "block";
 

@@ -206,4 +206,8 @@ if (file_exists($csv_filename)) {
 echo "Processus de mise à jour mené à son terme avec succès !\n";
 
 ?>
+
+<script>
+  window.parent.postMessage("produits_termines", window.location.origin);
+</script>
 </body>
