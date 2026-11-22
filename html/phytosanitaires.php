@@ -131,13 +131,12 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
                             autofocus onblur="fillFromNom()" />
                         <datalist id="produitspublics">
                             <?php
-                            var_dump(DB_PUBLIC_PPP);
                             $pdo_public_ppp = new PDO('sqlite:' . DB_PUBLIC_PPP);
                             $pdo_public_ppp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                            var_dump($pdo_public_ppp);
-                            $produitspp = $pdo_public_ppp->query("SELECT nom_produit FROM produits ORDER BY nom_produit");
-                            while ($produitpp = $produitspp->fetchArray(SQLITE3_ASSOC)) {
+                            $produitspp = $pdo_public_ppp->query("SELECT id, type_produit, numero_amm, nom_produit FROM produits WHERE type_produit IN ('PPP', 'ADJUVANT', 'MFSC') AND etat_autorisation = 'AUTORISE' ORDER BY nom_produit");
+                            $produitspp->execute();
+                            while ($produitpp = $produitspp->fetch(PDO::FETCH_ASSOC)) {
                                 echo "<option data-typeproduit='" . htmlspecialchars($produitpp['type_produit']) . "' data-amm='" . htmlspecialchars($produitpp['numero_amm']) . "' value='" . htmlspecialchars($produitpp['nom_produit']) . "'>" . htmlspecialchars_decode($produitpp['nom_produit']) . "</option>";
                             }
                             ?>
