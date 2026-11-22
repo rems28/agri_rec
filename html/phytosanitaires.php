@@ -21,17 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             case "create":
                 $nom = clean_input($_POST["nom"]);
                 $unite_emballage = clean_input($_POST["unite_emballage"]);
+                $type_produit = clean_input($_POST["type_produit"]);
                 $amm = clean_input($_POST["amm"]);
 
                 $stmt = $db->prepare(
-                    "INSERT INTO produits_phytosanitaires (nom, unite_emballage, amm) VALUES (:nom, :unite_emballage, :amm)",
+                    "INSERT INTO produits_phytosanitaires (nom, unite_emballage, type_produit, amm) VALUES (:nom, :unite_emballage, :type_produit, :amm)",
                 );
                 $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
-                $stmt->bindValue(
-                    ":unite_emballage",
-                    $unite_emballage,
-                    SQLITE3_TEXT,
-                );
+                $stmt->bindValue(":unite_emballage", $unite_emballage, SQLITE3_TEXT);
+                $stmt->bindValue(":type_produit", $type_produit, SQLITE3_TEXT);
                 $stmt->bindValue(":amm", $amm, SQLITE3_TEXT);
                 $stmt->execute();
                 break;
@@ -40,18 +38,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $id = intval($_POST["id"]);
                 $nom = clean_input($_POST["nom"]);
                 $unite_emballage = clean_input($_POST["unite_emballage"]);
+                $type_produit = clean_input($_POST["type_produit"]);
                 $amm = clean_input($_POST["amm"]);
 
                 $stmt = $db->prepare(
-                    "UPDATE produits_phytosanitaires SET nom = :nom, unite_emballage = :unite_emballage, amm = :amm WHERE id = :id",
+                    "UPDATE produits_phytosanitaires SET nom = :nom, unite_emballage = :unite_emballage, type_produit = :type_produit, amm = :amm WHERE id = :id",
                 );
                 $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
                 $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
-                $stmt->bindValue(
-                    ":unite_emballage",
-                    $unite_emballage,
-                    SQLITE3_TEXT,
-                );
+                $stmt->bindValue(":unite_emballage", $unite_emballage, SQLITE3_TEXT);
+                $stmt->bindValue(":type_produit", $type_produit, SQLITE3_TEXT);
                 $stmt->bindValue(":amm", $amm, SQLITE3_TEXT);
                 $stmt->execute();
                 break;
