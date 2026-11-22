@@ -1,3 +1,5 @@
+<body style="font-family: 'Outfit', sans-serif; font-size: 0.8rem;">
+
 <?php
 
 // Appeler les variables
@@ -137,7 +139,7 @@ if (($handle = fopen($csv_filename, 'r')) !== FALSE) {
     $idx_amm = array_search('numero AMM', $header);
     $idx_nom = array_search('nom produit', $header);
     $idx_sec = array_search('seconds noms commerciaux', $header);
-    
+
     $idx_etat = false;
     $idx_retrait = false;
     foreach ($header as $i => $h) {
@@ -149,10 +151,10 @@ if (($handle = fopen($csv_filename, 'r')) !== FALSE) {
     $pdo_public_ppp->beginTransaction();
 
     $stmt = $pdo_public_ppp->prepare("
-        INSERT INTO produits (type_produit, numero_amm, nom_produit, etat_autorisation, date_retrait) 
+        INSERT INTO produits (type_produit, numero_amm, nom_produit, etat_autorisation, date_retrait)
         VALUES (?, ?, ?, ?, ?)
-        ON CONFLICT(numero_amm, nom_produit) 
-        DO UPDATE SET 
+        ON CONFLICT(numero_amm, nom_produit)
+        DO UPDATE SET
             type_produit = excluded.type_produit,
             etat_autorisation = excluded.etat_autorisation,
             date_retrait = excluded.date_retrait
@@ -217,3 +219,4 @@ if (file_exists($csv_filename)) {
 echo "Processus de mise à jour mené à son terme avec succès !\n";
 
 ?>
+</body>

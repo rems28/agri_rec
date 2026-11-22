@@ -101,6 +101,15 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
         </form>
     </header>
 
+    <div id="popupProduits" class="popup-produits">
+        <div class="popup-header">
+            <span>Mise à jour des produits</span>
+            <button type="button" onclick="fermerPopupProduits()">×</button>
+        </div>
+
+        <iframe id="iframeProduits" title="Mise à jour des produits"></iframe>
+    </div>
+
     <div class="container">
         <div style="margin-bottom: 2rem;">
             <h1>Catalogue Phytosanitaires</h1>
@@ -108,7 +117,10 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
         </div>
 
         <section class="card">
-            <h3>Ajouter un produit</h3>
+            <div class="flex-inline">
+                <h3>Ajouter un produit </h3>
+                <a style="margin-left: auto;" href="#" onclick='ouvrirPopupProduits(); return false;' class="button">Mettre à jour la base produits</a>
+            </div>
             <form method="post">
                 <input type="hidden" name="action" value="create">
                 <div
@@ -229,6 +241,18 @@ endwhile; ?>
         function hideUpdateForm() {
             document.getElementById('updateFormBackdrop').style.display = 'none';
         }
+    </script>
+
+    <script>
+    function ouvrirPopupProduits() {
+        document.getElementById("popupProduits").style.display = "block";
+
+        document.getElementById("iframeProduits").src = "produits-publics.php";
+    }
+
+    function fermerPopupProduits() {
+        document.getElementById("popupProduits").style.display = "none";
+    }
     </script>
 </body>
 

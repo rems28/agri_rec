@@ -475,7 +475,7 @@ button.danger:hover {
     background: var(--card-bg-hover);
     transform: translateY(-3px);
     box-shadow: var(--shadow-sm);
-    
+
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(29, 216, 122, 0.5);
     box-shadow: 0 0 0 6px rgba(29, 216, 122, 0.25);
@@ -530,7 +530,7 @@ button.danger:hover {
     td:last-child > div {
         width: 100%;
     }
-    
+
     td:last-child button,
     td:last-child form {
         width: 100%;
@@ -542,7 +542,7 @@ button.danger:hover {
     div[id*="Backdrop"] {
         padding: 1rem !important;
     }
-    
+
     div[id*="Backdrop"] .card {
         width: 100% !important;
         max-width: 95vw !important;
@@ -556,7 +556,7 @@ button.danger:hover {
     div[style*="display: grid; grid-template-columns: repeat(auto-fit"]  {
         grid-template-columns: 1fr !important;
     }
-    
+
     div[style*="grid-template-columns: 1fr 1fr"] {
         grid-template-columns: 1fr !important;
     }
@@ -567,7 +567,7 @@ button.danger:hover {
     header form {
         width: 100%;
     }
-    
+
     header form button {
         width: 100%;
     }
@@ -582,12 +582,52 @@ button.danger:hover {
     .setup-wizard section {
         padding: 1.5rem;
     }
-    
+
     .setup-wizard h1 {
         font-size: 1.5rem;
     }
-    
+
     .setup-wizard p {
         font-size: 0.95rem;
     }
+}
+
+.popup-produits {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 400px;
+    height: 300px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.popup-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.popup-produits iframe {
+
+    width: 100%;
+    height: calc(100% - 48px);
+    border: none;
 }
