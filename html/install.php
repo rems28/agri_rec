@@ -101,13 +101,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $siret = htmlspecialchars(stripslashes(trim($_POST['siret'])));
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-$stmt = $db->prepare('INSERT OR IGNORE INTO users (username, entity, telepac, siret, password) VALUES (:username, :entity, :telepac, :siret, :password)');
-$stmt->bindValue(':username', $username, SQLITE3_TEXT);
-$stmt->bindValue(':entity', $entity, SQLITE3_TEXT);
-$stmt->bindValue(':telepac', $telepac, SQLITE3_TEXT);
-$stmt->bindValue(':siret', $siret, SQLITE3_TEXT);
-$stmt->bindValue(':password', $password, SQLITE3_TEXT);
-$stmt->execute();
+    $stmt = $db->prepare('INSERT OR IGNORE INTO users (username, entity, telepac, siret, password) VALUES (:username, :entity, :telepac, :siret, :password)');
+    $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+    $stmt->bindValue(':entity', $entity, SQLITE3_TEXT);
+    $stmt->bindValue(':telepac', $telepac, SQLITE3_TEXT);
+    $stmt->bindValue(':siret', $siret, SQLITE3_TEXT);
+    $stmt->bindValue(':password', $password, SQLITE3_TEXT);
+    $stmt->execute();
+
+    // Création de la base des produits publics
+    $pdo_public_ppp = new PDO('sqlite:' . DB_PUBLIC_PPP);
+    $pdo_public_ppp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Création de la table 'produits' (sans suppression des données existantes)
+    $pdo_public_ppp->exec("CREATE TABLE IF NOT EXISTS produits (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        type_produit TEXT,
+        numero_amm TEXT,
+        nom_produit TEXT,
+        etat_autorisation TEXT,
+        date_retrait TEXT
+    )");
+    // Création de l'index unique indispensable pour l'UPSERT
+    $pdo_public_ppp->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_produit_unique ON produits(numero_amm, nom_produit);");
 
     echo "Installation terminée. Les tables ont été créées et l'utilisateur $username a été ajouté.";
 ?>

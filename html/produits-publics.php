@@ -116,19 +116,6 @@ echo "--- ÉTAPE 5 : Initialisation SQLite & Synchronisation (UPSERT) ---\n";
 $pdo_public_ppp = new PDO('sqlite:' . DB_PUBLIC_PPP);
 $pdo_public_ppp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Création de la table 'produits' (sans suppression des données existantes)
-$pdo_public_ppp->exec("CREATE TABLE IF NOT EXISTS produits (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type_produit TEXT,
-    numero_amm TEXT,
-    nom_produit TEXT,
-    etat_autorisation TEXT,
-    date_retrait TEXT
-)");
-
-// Création de l'index unique indispensable pour l'UPSERT
-$pdo_public_ppp->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_produit_unique ON produits(numero_amm, nom_produit);");
-
 if (($handle = fopen($csv_filename, 'r')) !== FALSE) {
     $header = fgetcsv($handle, 0, ';');
     if (isset($header[0])) {
