@@ -193,8 +193,8 @@ $total_pages = ceil($total_interventions / $limit);
                         <th colspan="7">
                             Année culturale: <?= htmlspecialchars($intervention['annee_culturale']) ?> |
                             Parcelle : <?= htmlspecialchars_decode($intervention['parcelle_nom']) ?> <br/>
-                            N°Parcelle : <?= htmlspecialchars_decode($intervention['parcelle_parcelle']) ?>
-                            N°Ilot : <?= htmlspecialchars($intervention['parcelle_ilot']) ?> <br/>
+                            N°Ilot : <?= htmlspecialchars($intervention['parcelle_ilot']) ?> |
+                            N°Parcelle : <?= htmlspecialchars_decode($intervention['parcelle_parcelle']) ?> <br/>
                             Surface : <?= htmlspecialchars($intervention['surface']) ?> ha |
                             Culture : <?= htmlspecialchars_decode($intervention['type_culture']) ?>
                         </th>
