@@ -7,6 +7,13 @@ if (file_exists(DB_PATH)) {
     exit();
 }
 
+$folder = __DIR__ . '/../data';
+
+if (!is_dir($folder)) {
+    if (!mkdir($folder, 0750, true) && !is_dir($folder)) {
+        throw new \RuntimeException(sprintf('Impossible de créer le dossier : %s', $folder));
+    }
+}
 
 // Création de l'utilisateur admin
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
