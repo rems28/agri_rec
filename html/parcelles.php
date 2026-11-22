@@ -25,14 +25,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             case "create":
                 $nom = clean_input($_POST["nom"]);
                 $ilot = intval($_POST["ilot"]);
+                $parcelle = intval($_POST["parcelle"]);
                 $surface = floatval($_POST["surface"]);
                 $culture = clean_input($_POST["culture"]);
 
                 $stmt = $db->prepare(
-                    "INSERT INTO parcelles (nom, ilot, surface, culture) VALUES (:nom, :ilot, :surface, :culture)",
+                    "INSERT INTO parcelles (nom, ilot, parcelle, surface, culture) VALUES (:nom, :ilot, :parcelle, :surface, :culture)",
                 );
                 $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
                 $stmt->bindValue(":ilot", $ilot, SQLITE3_INTEGER);
+                $stmt->bindValue(":parcelle", $parcelle, SQLITE3_INTEGER);
                 $stmt->bindValue(":surface", $surface, SQLITE3_FLOAT);
                 $stmt->bindValue(":culture", $culture, SQLITE3_TEXT);
                 $stmt->execute();
@@ -42,15 +44,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $id = intval($_POST["id"]);
                 $nom = clean_input($_POST["nom"]);
                 $ilot = intval($_POST["ilot"]);
+                $parcelle = intval($_POST["parcelle"]);
                 $surface = floatval($_POST["surface"]);
                 $culture = clean_input($_POST["culture"]);
 
                 $stmt = $db->prepare(
-                    "UPDATE parcelles SET nom = :nom, ilot = :ilot, surface = :surface, culture = :culture WHERE id = :id",
+                    "UPDATE parcelles SET nom = :nom, ilot = :ilot, parcelle = :parcelle, surface = :surface, culture = :culture WHERE id = :id",
                 );
                 $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
                 $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
                 $stmt->bindValue(":ilot", $ilot, SQLITE3_INTEGER);
+                $stmt->bindValue(":parcelle", $parcelle, SQLITE3_INTEGER);
                 $stmt->bindValue(":surface", $surface, SQLITE3_FLOAT);
                 $stmt->bindValue(":culture", $culture, SQLITE3_TEXT);
                 $stmt->execute();
@@ -111,31 +115,29 @@ $parcelles = $db->query("SELECT * FROM parcelles");
             <h3>Ajouter une parcelle</h3>
             <form method="post">
                 <input type="hidden" name="action" value="create">
-                <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
                     <div>
-                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Nom
-                            de la parcelle</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Nom de la parcelle</label>
                         <input type="text" name="nom" placeholder="ex: La Grande Plaine" required style="width:100%;" autofocus>
                     </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
                     <div>
-                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N°
-                            Ilot</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N° Ilot</label>
                         <input type="number" name="ilot" step="1" placeholder="ex: 12" required style="width:100%;">
                     </div>
-                </div>
-                <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%; margin-top: 1rem;">
                     <div>
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Surface
-                            (ha)</label>
-                        <input type="number" name="surface" step="0.01" placeholder="ex: 5.42" required
-                            style="width:100%;">
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N° Parcelle</label>
+                        <input type="text" name="parcelle" placeholder="ex: 1" required style="width:100%;" autofocus>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%; margin-top: 1rem;">
+                    <div>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Surface (ha)</label>
+                        <input type="number" name="surface" step="0.01" placeholder="ex: 5.42" required style="width:100%;">
                     </div>
                     <div>
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Culture</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Culture</label>
                         <input type="text" name="culture" placeholder="ex: Blé" required style="width:100%;">
                     </div>
                 </div>
@@ -152,7 +154,8 @@ $parcelles = $db->query("SELECT * FROM parcelles");
                     <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Ilot</th>
+                            <th>N°Ilot</th>
+                            <th>N°Parcelle</th>
                             <th>Surface (ha)</th>
                             <th>Culture</th>
                             <th style="text-align: center;">Actions</th>
@@ -163,6 +166,7 @@ $parcelles = $db->query("SELECT * FROM parcelles");
                         <tr>
                             <td style="font-weight: 600;"><?php echo htmlspecialchars_decode($parcelle["nom"]); ?></td>
                             <td><?php echo htmlspecialchars($parcelle["ilot"]); ?></td>
+                            <td><?php echo htmlspecialchars($parcelle["parcelle"]); ?></td>
                             <td><?php echo htmlspecialchars($parcelle["surface"]); ?> ha</td>
                             <td><?php echo htmlspecialchars_decode($parcelle["culture"]); ?></td>
                             <td style="text-align: right;">
@@ -195,30 +199,31 @@ endwhile; ?>
                     <input type="hidden" name="id" id="update_id">
 
                     <div style="width: 100%; margin-bottom: 1rem;">
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Nom</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Nom</label>
                         <input type="text" name="nom" id="update_nom" required style="width:100%;">
                     </div>
 
-                    <div
-                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; margin-bottom: 1rem;">
                         <div>
-                            <label
-                                style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Ilot</label>
+                            <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N°Ilot</label>
                             <input type="number" name="ilot" id="update_ilot" step="1" required style="width:100%;">
                         </div>
                         <div>
-                            <label
-                                style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Surface</label>
-                            <input type="number" name="surface" id="update_surface" step="0.01" required
-                                style="width:100%;">
+                            <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N°Parcelle</label>
+                            <input type="number" name="parcelle" id="update_parcelle" step="1" required style="width:100%;">
                         </div>
                     </div>
 
-                    <div style="width: 100%; margin-bottom: 1.5rem;">
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Culture</label>
-                        <input type="text" name="culture" id="update_culture" required style="width:100%;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Surface</label>
+                            <input type="number" name="surface" id="update_surface" step="0.01" required
+                                style="width:100%;">
+                        </div>
+                        <div>
+                            <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Culture</label>
+                            <input type="text" name="culture" id="update_culture" required style="width:100%;">
+                        </div>
                     </div>
 
                     <div style="display: flex; justify-content: flex-end; gap: 1rem; width: 100%;">
@@ -237,6 +242,7 @@ endwhile; ?>
             document.getElementById('update_id').value = parcelle.id;
             document.getElementById('update_nom').value = htmlSpecialCharsDecode(parcelle.nom);
             document.getElementById('update_ilot').value = parcelle.ilot;
+            document.getElementById('update_parcelle').value = parcelle.parcelle;
             document.getElementById('update_surface').value = parcelle.surface;
             document.getElementById('update_culture').value = htmlSpecialCharsDecode(parcelle.culture);
         }

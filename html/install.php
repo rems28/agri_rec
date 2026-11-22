@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom TEXT NOT NULL,
         ilot INTEGER NOT NULL,
+        parcelle INTEGER NOT NULL,
         surface REAL NOT NULL,
         culture TEXT NOT NULL
     )");
