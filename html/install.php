@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Création table 'synchro'
     $db->exec("CREATE TABLE IF NOT EXISTS synchro (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        synchro_produits_publics TEXT,
+        synchro_name TEXT UNIQUE,
         date_synchro TEXT
     )");
 

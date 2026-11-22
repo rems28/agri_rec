@@ -55,7 +55,7 @@ $pdo = new PDO('sqlite:' . DB_PATH);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Vérifier si la date est déjà enregistrée en base
-$stmt = $pdo->prepare("SELECT date_synchro FROM synchro WHERE synchro_produits_publics = 'date_source_donnees'");
+$stmt = $pdo->prepare("SELECT date_synchro FROM synchro WHERE synchro_name = 'synchro_ppp'");
 $stmt->execute();
 $stored_date = $stmt->fetchColumn();
 
@@ -191,8 +191,8 @@ if (($handle = fopen($csv_filename, 'r')) !== FALSE) {
     $pdo_public_ppp->commit();
 
     // Mettre à jour la date source dans la table synchro
-    $stmt = $pdo->prepare("INSERT INTO synchro (synchro_produits_publics, date_synchro) VALUES (:synchro_produits_publics, :date_synchro) ON CONFLICT(synchro_produits_publics) DO UPDATE SET date_synchro = :date_synchro");
-    $stmt->execute([':synchro_produits_publics' => 'date_source_donnees', ':date_synchro' => $file_date]);
+    $stmt = $pdo->prepare("INSERT INTO synchro (synchro_name, date_synchro) VALUES (:synchro_name, :date_synchro) ON CONFLICT(synchro_name) DO UPDATE SET date_synchro = :date_synchro");
+    $stmt->execute([':synchro_name' => 'synchro_ppp', ':date_synchro' => $file_date]);
 
 
     echo "Synchronisation terminée avec succès !\n";
