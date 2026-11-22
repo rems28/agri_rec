@@ -27,6 +27,7 @@ $query = "
         ip.stade,
         p.id AS parcelle_id,
         p.nom AS parcelle_nom,
+        p.parcelle AS parcelle_parcelle,
         p.ilot AS parcelle_ilot,
         p.culture AS type_culture,
         p.surface,
@@ -37,7 +38,8 @@ $query = "
         round((dip.volume_total / p.surface), 2) AS volume_par_ha,
         dip.cible AS cible,
         u.entity,
-        u.telepac
+        u.telepac,
+        u.siret
     FROM
         interventions_phytosanitaires ip, users u
     JOIN
@@ -85,14 +87,16 @@ try {
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $key = $row['annee_culturale'] . '_' . $row['parcelle_id'];
 
-        $entity = $row['entity'];
+        $entity  = $row['entity'];
         $telepac = $row['telepac'];
+        $siret   = $row['siret'];
 
         if (!isset($interventions[$key])) {
             $interventions[$key] = [
                 'annee_culturale' => $row['annee_culturale'],
                 'parcelle_id' => $row['parcelle_id'],
                 'parcelle_nom' => $row['parcelle_nom'],
+                'parcelle_parcelle' => $row['parcelle_parcelle'],
                 'parcelle_ilot' => $row['parcelle_ilot'],
                 'surface' => $row['surface'],
                 'type_culture' => $row['type_culture'],
@@ -151,7 +155,7 @@ $total_pages = ceil($total_interventions / $limit);
 </head>
 <body>
     <h1>Registre des interventions phytosanitaires</h1>
-    <h2><?php echo $entity; ?> - Telepac: <?php echo $telepac; ?></h2>
+    <h2><?php echo $entity; ?> - Telepac: <?php echo $telepac; ?> - SIRET: <?php echo $siret; ?></h2>
     <br>
     <!-- Formulaire de tri -->
     <form method="get">
@@ -188,7 +192,8 @@ $total_pages = ceil($total_interventions / $limit);
                     <tr>
                         <th colspan="7">
                             Année culturale: <?= htmlspecialchars($intervention['annee_culturale']) ?> |
-                            Parcelle : <?= htmlspecialchars_decode($intervention['parcelle_nom']) ?> <br/>
+                            Nom : <?= htmlspecialchars_decode($intervention['parcelle_nom']) ?> <br/>
+                            Parcelle : <?= htmlspecialchars_decode($intervention['parcelle_parcelle']) ?> <br/>
                             Ilot : <?= htmlspecialchars($intervention['parcelle_ilot']) ?> <br/>
                             Surface : <?= htmlspecialchars($intervention['surface']) ?> ha |
                             Culture : <?= htmlspecialchars_decode($intervention['type_culture']) ?>

@@ -27,6 +27,7 @@ $query = "
         ip.stade,
         p.id AS parcelle_id,
         p.nom AS parcelle_nom,
+        p.parcelle AS parcelle_parcelle,
         p.ilot AS parcelle_ilot,
         p.culture AS type_culture,
         p.surface,
@@ -38,7 +39,8 @@ $query = "
         round((dip.volume_total / p.surface), 2) AS volume_par_ha,
         dip.cible AS cible,
         u.entity,
-        u.telepac
+        u.telepac,
+        u.siret
     FROM
         interventions_phytosanitaires ip, users u
     JOIN
@@ -86,14 +88,16 @@ try {
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $key = $row['annee_culturale'] . '_' . $row['parcelle_id'];
 
-        $entity = $row['entity'];
+        $entity  = $row['entity'];
         $telepac = $row['telepac'];
+        $siret   = $row['siret'];
 
         if (!isset($interventions[$key])) {
             $interventions[$key] = [
                 'annee_culturale' => $row['annee_culturale'],
                 'parcelle_id' => $row['parcelle_id'],
                 'parcelle_nom' => $row['parcelle_nom'],
+                'parcelle_parcelle' => $row['parcelle_parcelle'],
                 'parcelle_ilot' => $row['parcelle_ilot'],
                 'surface' => $row['surface'],
                 'type_culture' => $row['type_culture'],
@@ -257,15 +261,10 @@ else: ?>
                         <?= htmlspecialchars_decode($intervention['parcelle_nom'])?>
                     </h3>
                     <div class="report-meta">
-                        <span>Ilot: <b>
-                                <?= htmlspecialchars($intervention['parcelle_ilot'])?>
-                            </b></span>
-                        <span>Surface: <b>
-                                <?= htmlspecialchars($intervention['surface'])?> ha
-                            </b></span>
-                        <span>Culture: <b>
-                                <?= htmlspecialchars_decode($intervention['type_culture'])?>
-                            </b></span>
+                        <span>Ilot: <b><?= htmlspecialchars($intervention['parcelle_ilot'])?></b></span>
+                        <span>Parcelle: <b><?= htmlspecialchars($intervention['parcelle_parcelle'])?></b></span>
+                        <span>Surface: <b><?= htmlspecialchars($intervention['surface'])?> ha</b></span>
+                        <span>Culture: <b><?= htmlspecialchars_decode($intervention['type_culture'])?></b></span>
                     </div>
                 </div>
                 <div style="text-align: right;">
