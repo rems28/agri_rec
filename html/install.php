@@ -23,6 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         password TEXT NOT NULL
     )");
 
+    // Création table 'synchro'
+    $db->exec("CREATE TABLE IF NOT EXISTS synchro (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        synchro_produits_publics TEXT,
+        date_synchro TEXT
+    )");
+
     $db->exec("CREATE TABLE IF NOT EXISTS parcelles (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom TEXT NOT NULL,
