@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db->exec("CREATE TABLE IF NOT EXISTS produits_phytosanitaires (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom TEXT NOT NULL,
+        type_produit TEXT NOT NULL,
         unite_emballage TEXT NOT NULL,
         amm TEXT NOT NULL
     )");
