@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "includes/config.php";
 require_once "includes/db.php";
 
 if (!isset($_SESSION["user_id"])) {
@@ -128,7 +129,27 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Nom
                             du produit</label>
-                        <input type="text" name="nom" placeholder="ex: RoundUp" required style="width:100%;" autofocus>
+                        <input type="text" id="nom_produit" name="nom" placeholder="ex: RoundUp" required style="width:100%;"
+                            onkeyup="if(this.value.length>=2)this.setAttribute('list','produitspublics');"
+                            onkeydown="if(this.value.length<2||event.keyCode==8)this.removeAttribute('list');"
+                            autofocus onblur="fillFromNom()" />
+                        <datalist id="produitspublics">
+                            <?php
+                            var_dump(DB_PUBLIC_PPP);
+                            $pdo_public_ppp = new PDO('sqlite:' . DB_PUBLIC_PPP);
+                            $pdo_public_ppp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                            var_dump($pdo_public_ppp);
+                            $produitspp = $pdo_public_ppp->query("SELECT nom_produit FROM produits ORDER BY nom_produit");
+                            while ($produitpp = $produitspp->fetchArray(SQLITE3_ASSOC)) {
+                                echo "<option data-typeproduit='" . htmlspecialchars($produitpp['type_produit']) . "' data-amm='" . htmlspecialchars($produitpp['numero_amm']) . "' value='" . htmlspecialchars($produitpp['nom_produit']) . "'>" . htmlspecialchars_decode($produitpp['nom_produit']) . "</option>";
+                            }
+                            ?>
+                        </datalist>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Type produit</label>
+                        <input type="text" id="type_produit" name="type_produit" placeholder="ex: ADJUVANT" required style="width:100%;">
                     </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Unité
@@ -138,7 +159,7 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">N°
                             AMM</label>
-                        <input type="text" name="amm" placeholder="ex: 2040523" required style="width:100%;">
+                        <input type="text" id="amm" name="amm" placeholder="ex: 2040523" required style="width:100%;">
                     </div>
                 </div>
                 <div style="margin-top: 1.5rem; text-align: right; width: 100%;">
@@ -155,6 +176,7 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
                         <tr>
                             <th>Nom</th>
                             <th>Unité</th>
+                            <th>Type produit</th>
                             <th>AMM</th>
                             <th style="text-align: center;">Actions</th>
                         </tr>
@@ -167,6 +189,9 @@ $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
                             </td>
                             <td style="color: var(--text-muted);">
                                 <?php echo htmlspecialchars($produit["unite_emballage"]); ?>
+                            </td>
+                            <td style="color: var(--text-muted);">
+                                <?php echo htmlspecialchars($produit["type_produit"]); ?>
                             </td>
                             <td><?php echo htmlspecialchars($produit["amm"]); ?></td>
                             <td style="text-align: center;">
@@ -229,30 +254,43 @@ endwhile; ?>
     </div>
 
     <script src="includes/functions.js"></script>
-    <script>
-        function showUpdateForm(produit) {
-            document.getElementById('updateFormBackdrop').style.display = 'flex';
-            document.getElementById('update_id').value = produit.id;
-            document.getElementById('update_nom').value = htmlSpecialCharsDecode(produit.nom);
-            document.getElementById('update_unite_emballage').value = produit.unite_emballage;
-            document.getElementById('update_amm').value = produit.amm;
-        }
+  <script>
+      function showUpdateForm(produit) {
+        document.getElementById('updateFormBackdrop').style.display = 'flex';
+        document.getElementById('update_id').value = produit.id;
+        document.getElementById('update_nom').value = htmlSpecialCharsDecode(produit.nom);
+        document.getElementById('update_unite_emballage').value = produit.unite_emballage;
+        document.getElementById('update_amm').value = produit.amm;
+      }
 
-        function hideUpdateForm() {
-            document.getElementById('updateFormBackdrop').style.display = 'none';
-        }
-    </script>
+      function hideUpdateForm() {
+        document.getElementById('updateFormBackdrop').style.display = 'none';
+      }
 
-    <script>
-    function ouvrirPopupProduits() {
+      function ouvrirPopupProduits() {
         document.getElementById("popupProduits").style.display = "block";
 
         document.getElementById("iframeProduits").src = "produits-publics.php";
-    }
+      }
 
-    function fermerPopupProduits() {
+      function fermerPopupProduits() {
         document.getElementById("popupProduits").style.display = "none";
-    }
+      }
+
+      function fillFromNom() {
+        const nom_produit = document.getElementById('nom_produit').value;
+        const datalist = document.getElementById('produitspublics');
+
+        const produit = Array.from(datalist.options).find(
+          option => option.value === nom_produit
+        );
+        if (!produit) {
+          return;
+        }
+
+        document.getElementById('type_produit').value = produit.dataset.typeproduit || '';
+        document.getElementById('amm').value = produit.dataset.amm || '';
+      }
     </script>
 </body>
 
