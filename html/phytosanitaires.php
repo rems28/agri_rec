@@ -239,6 +239,12 @@ endwhile; ?>
                         </div>
                         <div>
                             <label
+                                style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Type produit</label>
+                            <input type="text" name="type_produit" id="update_type_produit" required
+                                style="width:100%;">
+                        </div>
+                        <div>
+                            <label
                                 style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">AMM</label>
                             <input type="text" name="amm" id="update_amm" required style="width:100%;">
                         </div>
@@ -260,6 +266,7 @@ endwhile; ?>
         document.getElementById('update_id').value = produit.id;
         document.getElementById('update_nom').value = htmlSpecialCharsDecode(produit.nom);
         document.getElementById('update_unite_emballage').value = produit.unite_emballage;
+        document.getElementById('update_type_produit').value = produit.type_produit;
         document.getElementById('update_amm').value = produit.amm;
       }
 
