@@ -18,6 +18,7 @@ $query = "
         ip.annee_culturale,
         pp.nom AS produit_nom,
         pp.unite_emballage AS produit_unite,
+        pp.type_produit AS produit_type,
         pp.amm AS produit_amm,
         SUM(dip.volume_total) AS volume_total,
         u.entity,
@@ -81,6 +82,7 @@ try {
             'stade' => $row['stade'],
             'produit_nom' => $row['produit_nom'],
             'produit_unite' => $row['produit_unite'],
+            'produit_type' => $row['produit_type'],
             'produit_amm' => $row['produit_amm'],
             'volume_total' => $row['volume_total'],
             'volume_par_ha' => $row['volume_par_ha'],
@@ -206,6 +208,7 @@ else: ?>
                     <thead>
                         <tr>
                             <th>Produit</th>
+                            <th>Type de produit</th>
                             <th>AMM</th>
                             <th>Volume total</th>
                         </tr>
@@ -217,6 +220,7 @@ else: ?>
                             <td style="font-weight: 500;">
                                 <?= htmlspecialchars_decode($detail['produit_nom'])?>
                             </td>
+                            <td><?= htmlspecialchars($detail['produit_type'])?></td>
                             <td><?= htmlspecialchars($detail['produit_amm'])?></td>
                             <td>
                                 <?= htmlspecialchars($detail['volume_total'])?>
