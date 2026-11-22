@@ -1,5 +1,8 @@
 <?php
 
+// Appeler les variables
+require_once 'includes/db.php';
+
 // Augmenter les limites pour traiter un gros fichier CSV sans timeout
 set_time_limit(600);
 ini_set('memory_limit', '512M');
