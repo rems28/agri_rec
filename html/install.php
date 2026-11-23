@@ -80,7 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db->exec("CREATE TABLE IF NOT EXISTS interventions_phytosanitaires (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         parcelle_id INTEGER,
-        date DATE NOT NULL,
+        date_debut DATE NOT NULL,
+        date_fin DATE NOT NULL,
+        pourcentage REAL NOT NULL,
         annee_culturale INTEGER NOT NULL,
         stade TEXT NOT NULL,
         FOREIGN KEY (parcelle_id) REFERENCES parcelles(id)
