@@ -33,7 +33,6 @@ $query = "
         p.ilot AS parcelle_ilot,
         p.culture AS type_culture,
         p.surface,
-        round((p.surface * (ip.pourcentage / 100)), 2) AS surface_traitee,
         pp.nom AS produit_nom,
         pp.unite_emballage AS produit_unite,
         pp.type_produit AS produit_type,
@@ -117,7 +116,7 @@ try {
             'produit_type' => $row['produit_type'],
             'produit_amm' => $row['produit_amm'],
             'volume_total' => $row['volume_total'],
-            'surface_traitee' => $row['surface_traitee'],
+            'surface' => $row['surface'],
             'cible' => $row['cible']
         ];
     }
@@ -338,7 +337,7 @@ else: ?>
                                 <?= htmlspecialchars($intervention['pourcentage'])?>
                             </td>
                             <td><span style="color: var(--primary-color); font-weight: 600;">
-                                    <?= htmlspecialchars($detail['volume_total'] / ($intervention['surface_traitee']))?>
+                                    <?= round($detail['volume_total'] / ($intervention['surface'] * ($intervention['pourcentage'] / 100)), 3);?>
                                     <?= htmlspecialchars($detail['produit_unite'])?>/ha
                                 </span></td>
                             <td style="color: var(--text-muted); font-size: 0.85rem;">
