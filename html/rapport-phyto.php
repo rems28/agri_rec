@@ -22,9 +22,11 @@ $offset = ($page - 1) * $limit;
 $query = "
     SELECT
         ip.id AS intervention_id,
-        STRFTIME('%d/%m/%Y %H:%M', ip.date) AS date,
+        STRFTIME('%d/%m/%Y %H:%M', ip.date_debut) AS date_debut,
+        STRFTIME('%d/%m/%Y %H:%M', ip.date_fin) AS date_fin,
         ip.annee_culturale,
         ip.stade,
+        ip.pourcentage,
         p.id AS parcelle_id,
         p.nom AS parcelle_nom,
         p.parcelle AS parcelle_parcelle,
@@ -61,7 +63,7 @@ if ($parcelle_filter) {
     $params[':parcelle_id'] = $parcelle_filter;
 }
 
-$query .= " ORDER BY ip.annee_culturale, p.nom, ip.date, pp.nom
+$query .= " ORDER BY ip.annee_culturale, p.nom, ip.date_debut, pp.nom
             LIMIT :limit OFFSET :offset";
 
 $params[':limit'] = $limit;
@@ -100,6 +102,7 @@ try {
                 'parcelle_parcelle' => $row['parcelle_parcelle'],
                 'parcelle_ilot' => $row['parcelle_ilot'],
                 'surface' => $row['surface'],
+                'pourcentage' => $row['pourcentage'],
                 'type_culture' => $row['type_culture'],
                 'interventions' => []
             ];
@@ -283,6 +286,7 @@ else: ?>
                             <th>Type de produit</th>
                             <th>AMM</th>
                             <th>Volume total</th>
+                            <th>% réalisé</th>
                             <th>Dose/ha</th>
                             <th>Cible</th>
                         </tr>
@@ -318,8 +322,11 @@ else: ?>
                                 <?= htmlspecialchars($detail['volume_total'])?>
                                 <?= htmlspecialchars($detail['produit_unite'])?>
                             </td>
+                            <td>
+                                <?= htmlspecialchars($intervention['pourcentage'])?>
+                            </td>
                             <td><span style="color: var(--primary-color); font-weight: 600;">
-                                    <?= htmlspecialchars($detail['volume_par_ha'])?>
+                                    <?= htmlspecialchars($detail['volume_par_ha'] * ($intervention['pourcentage'] / 100))?>
                                     <?= htmlspecialchars($detail['produit_unite'])?>/ha
                                 </span></td>
                             <td style="color: var(--text-muted); font-size: 0.85rem;">
