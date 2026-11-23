@@ -26,7 +26,7 @@ $query = "
         STRFTIME('%d/%m/%Y %H:%M', ip.date_fin) AS date_fin,
         ip.annee_culturale,
         ip.stade,
-        ip.pourcentage,
+        ip.pourcentage AS parcelle_pourcentage,
         p.id AS parcelle_id,
         p.nom AS parcelle_nom,
         p.parcelle AS parcelle_parcelle,
@@ -116,7 +116,7 @@ try {
             'produit_amm' => $row['produit_amm'],
             'volume_total' => $row['volume_total'],
             'surface' => $row['surface'],
-            'pourcentage' => $row['pourcentage'],
+            'parcelle_pourcentage' => $row['parcelle_pourcentage'],
             'cible' => $row['cible']
         ];
     }
