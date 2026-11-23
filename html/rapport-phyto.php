@@ -101,7 +101,6 @@ try {
                 'parcelle_parcelle' => $row['parcelle_parcelle'],
                 'parcelle_ilot' => $row['parcelle_ilot'],
                 'surface' => $row['surface'],
-                'pourcentage' => $row['pourcentage'],
                 'type_culture' => $row['type_culture'],
                 'interventions' => []
             ];
@@ -117,6 +116,7 @@ try {
             'produit_amm' => $row['produit_amm'],
             'volume_total' => $row['volume_total'],
             'surface' => $row['surface'],
+            'pourcentage' => $row['pourcentage'],
             'cible' => $row['cible']
         ];
     }
