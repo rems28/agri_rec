@@ -109,6 +109,7 @@ $interventions = $db->query('SELECT ip.*, p.nom as parcelle_nom, p.surface, p.il
                     <div>
                         <label style="font-size: 0.8rem; font-weight: 600;">Produit</label>
                         <select name="produit_id[]" required style="width:100%;">
+                            <option value="" disabled selected>Choisir un phyto</option>
                             <?php
 $produits->reset();
 while ($produit = $produits->fetchArray(SQLITE3_ASSOC)):
@@ -134,6 +135,7 @@ endwhile; ?>
                 </div>
             `;
             container.appendChild(newProduit);
+            newProduit.querySelector('select[name="produit_id[]"]').focus();
         }
     </script>
 </head>
@@ -212,20 +214,20 @@ endwhile; ?>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date du début de l'intervention</label>
-                        <input type="date" name="date_debut" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
+                        <input type="date" id="date_debut" name="date_debut" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;" onblur="remplirHeureFin()">
                     </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure de début</label>
-                        <input type="time" name="heure_debut" value="<?php echo date('H:i'); ?>" required style="width:100%;">
+                        <input type="time" id="heure_debut" name="heure_debut" value="<?php echo date('H:i'); ?>" required style="width:100%;" onblur="remplirHeureFin()">
                     </div>
 
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date de fin d'intervention</label>
-                        <input type="date" name="date_fin" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
+                        <input type="date" id="date_fin" name="date_fin" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
                     </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure de fin</label>
-                        <input type="time" name="heure_fin" value="<?php echo date('H:i'); ?>" required style="width:100%;">
+                        <input type="time" id="heure_fin" name="heure_fin" value="<?php echo date('H:i'); ?>" required style="width:100%;">
                     </div>
 
                     
@@ -369,6 +371,30 @@ endwhile; ?>
             </div>
         </section>
     </div>
+    <script>
+    function remplirHeureFin() {
+      const dateDebut = document.getElementById('date_debut');
+      const heureDebut = document.getElementById('heure_debut');
+      const dateFin = document.getElementById('date_fin');
+      const heureFin = document.getElementById('heure_fin');
+
+      //on créé un champ date et on ajoute 1 heure
+      const date = new Date(dateDebut.value + 'T' + heureDebut.value);
+      date.setHours(date.getHours() + 1);
+
+      // Fonction de formatage sur deux chiffres
+      const pad = n => String(n).padStart(2, '0');
+
+      // Remplir la date de fin
+      dateFin.value = date.getFullYear() + '-' +
+                      pad(date.getMonth() + 1) + '-' +
+                      pad(date.getDate());
+
+      // Remplir l'heure de fin
+      heureFin.value = pad(date.getHours()) + ':' +
+                        pad(date.getMinutes());
+    }
+    </script>
 </body>
 
 </html>
