@@ -63,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 break;
         }
     }
+    header("Location: phytosanitaires.php");
 }
 
 $produits = $db->query("SELECT * FROM produits_phytosanitaires ORDER BY nom");
