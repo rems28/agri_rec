@@ -39,7 +39,6 @@ $query = "
         pp.type_produit AS produit_type,
         pp.amm AS produit_amm,
         dip.volume_total,
-        round((dip.volume_total / surface_traitee), 2) AS volume_par_ha,
         dip.cible AS cible,
         u.entity,
         u.telepac,
@@ -118,7 +117,7 @@ try {
             'produit_type' => $row['produit_type'],
             'produit_amm' => $row['produit_amm'],
             'volume_total' => $row['volume_total'],
-            'volume_par_ha' => $row['volume_par_ha'],
+            'surface_traitee' => $row['surface_traitee'],
             'cible' => $row['cible']
         ];
     }
@@ -339,7 +338,7 @@ else: ?>
                                 <?= htmlspecialchars($intervention['pourcentage'])?>
                             </td>
                             <td><span style="color: var(--primary-color); font-weight: 600;">
-                                    <?= htmlspecialchars($detail['volume_par_ha'])?>
+                                    <?= htmlspecialchars($detail['volume_total'] / ($intervention['surface_traitee']))?>
                                     <?= htmlspecialchars($detail['produit_unite'])?>/ha
                                 </span></td>
                             <td style="color: var(--text-muted); font-size: 0.85rem;">
