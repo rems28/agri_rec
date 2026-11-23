@@ -128,12 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Création de l'index unique indispensable pour l'UPSERT
     $pdo_public_ppp->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_produit_unique ON produits(numero_amm, nom_produit);");
 
-    echo "Installation terminée. Les tables ont été créées et l'utilisateur $username a été ajouté.";
-?>
+    //echo "Installation terminée. Les tables ont été créées et l'utilisateur $username a été ajouté.";
 
-<h3> <a href="login.php"> Accueil </a> </h3>
-<?php
-    exit;
+    //header('Location: login.php');
+    //exit();
 }
 ?>
 
@@ -143,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuration - AgriRec</title>
+    <title>Installation - AgriRec</title>
     <link rel="stylesheet" href="includes/style.css">
     <style>
         body {
@@ -207,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
             <div class="success-message">
-                <h3 style="margin-top:0;">Configuration Terminée !</h3>
+                <h3 style="margin-top:0;">Installation Terminée !</h3>
                 <p>La base de données a été initialisée avec succès.</p>
             </div>
             <a href="login.php" class="button"

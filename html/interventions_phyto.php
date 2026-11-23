@@ -76,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
         }
     }
+    header("Location: interventions_phyto.php");
 }
 
 $parcelles = $db->query('SELECT * FROM parcelles ORDER BY nom');
