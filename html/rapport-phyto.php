@@ -280,7 +280,8 @@ else: ?>
                 <table>
                     <thead>
                         <tr>
-                            <th>Date & Heure</th>
+                            <th>Date & heure de début</th>
+                            <th>Date & heure de fin</th>
                             <th>Stade</th>
                             <th>Produit</th>
                             <th>Type de produit</th>
@@ -292,15 +293,25 @@ else: ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $last_date = ''; ?>
+                        <?php $last_date_debut = ''; ?>
+                        <?php $last_date_fin = ''; ?>
                         <?php foreach ($intervention['interventions'] as $detail): ?>
                         <tr>
                             <td>
-                                <?php if ($detail['date'] !== $last_date) { ?>
+                                <?php if ($detail['date_debut'] !== $last_date_debut) { ?>
                                 <span style="font-weight: 600;">
-                                    <?= htmlspecialchars($detail['date'])?>
+                                    <?= htmlspecialchars($detail['date_debut'])?>
                                 </span>
-                                <?php $last_date = $detail['date']; ?>
+                                <?php $last_date_debut = $detail['date_debut']; ?>
+                                <?php
+                                    } ?>
+                            </td>
+                            <td>
+                                <?php if ($detail['date_fin'] !== $last_date_fin) { ?>
+                                <span style="font-weight: 600;">
+                                    <?= htmlspecialchars($detail['date_fin'])?>
+                                </span>
+                                <?php $last_date_fin = $detail['date_fin']; ?>
                                 <?php
                                     } ?>
                             </td>
