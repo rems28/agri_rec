@@ -69,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 break;
         }
     }
+    header("Location: parcelles.php");
 }
 
 // Récupération des parcelles

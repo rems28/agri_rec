@@ -76,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 break;
         }
     }
+    header("Location: engrais.php");
 }
 
 $engrais = $db->query("SELECT * FROM engrais ORDER BY nom");
