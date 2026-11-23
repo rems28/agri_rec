@@ -109,7 +109,8 @@ try {
         }
 
         $interventions[$key]['interventions'][] = [
-            'date' => $row['date'],
+            'date_debut' => $row['date_debut'],
+            'date_fin' => $row['date_fin'],
             'stade' => $row['stade'],
             'produit_nom' => $row['produit_nom'],
             'produit_unite' => $row['produit_unite'],
