@@ -211,7 +211,7 @@ endwhile; ?>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date du début de l'intervention</label>
-                        <input type="date_debut" name="date_debut" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
+                        <input type="date_debut" name="date_debut" value="<?php echo date('d/m/Y'); ?>" required style="width:100%;">
                     </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure de début</label>
@@ -220,7 +220,7 @@ endwhile; ?>
 
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date de fin d'intervention</label>
-                        <input type="date_fin" name="date_fin" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
+                        <input type="date_fin" name="date_fin" value="<?php echo date('d/m/Y'); ?>" required style="width:100%;">
                     </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure de fin</label>
@@ -280,11 +280,11 @@ endwhile; ?>
                     <thead>
                         <tr>
                             <th>Campagne</th>
-                            <th>Parcelle (Ilot)</th>
-                            <th>Date / Heure intervention</th>
+                            <th>Parcelle</th>
+                            <th>Date / Heure</th>
                             <th>Stade</th>
                             <th>% réalisé</th>
-                            <th>Détails des produits & doses</th>
+                            <th>Détail intervention</th>
                             <th style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
