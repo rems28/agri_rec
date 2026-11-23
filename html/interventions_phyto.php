@@ -19,19 +19,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($_POST['action']) {
             case 'create':
                 $parcelle_id = intval($_POST['parcelle_id']);
-                $date = clean_input($_POST['date']);
-                $heure = clean_input($_POST['heure']);
-                $stade = clean_input($_POST['stade']);
                 $annee_culturale = intval($_POST['annee_culturale']);
-                $datetime = $date . ' ' . $heure;
+                $pourcentage = intval($_POST['pourcentage']);
+                $stade = clean_input($_POST['stade']);
+                $date_debut = clean_input($_POST['date_debut']);
+                $heure_debut = clean_input($_POST['heure_debut']);
+                $date_fin = clean_input($_POST['date_fin']);
+                $heure_fin = clean_input($_POST['heure_fin']);
+                
+                
+                $datetime_debut = $date_debut . ' ' . $heure_debut;
+                $datetime_fin = $date_fin . ' ' . $heure_fin;
 
                 $db->exec('BEGIN TRANSACTION');
 
-                $stmt = $db->prepare('INSERT INTO interventions_phytosanitaires (parcelle_id, date, annee_culturale, stade) VALUES (:parcelle_id, :date, :annee_culturale, :stade)');
+                $stmt = $db->prepare('INSERT INTO interventions_phytosanitaires (parcelle_id, annee_culturale, pourcentage, stade, date_debut, date_fin) VALUES (:parcelle_id, :annee_culturale, :pourcentage, :stade, :date_debut, :date_fin)');
                 $stmt->bindValue(':parcelle_id', $parcelle_id, SQLITE3_INTEGER);
-                $stmt->bindValue(':date', $datetime, SQLITE3_TEXT);
                 $stmt->bindValue(':annee_culturale', $annee_culturale, SQLITE3_INTEGER);
+                $stmt->bindValue(':pourcentage', $pourcentage, SQLITE3_FLOAT);
                 $stmt->bindValue(':stade', $stade, SQLITE3_TEXT);
+                $stmt->bindValue(':date_debut', $datetime_debut, SQLITE3_TEXT);
+                $stmt->bindValue(':date_fin', $datetime_fin, SQLITE3_TEXT);
                 $stmt->execute();
 
                 $intervention_id = $db->lastInsertRowID();
@@ -72,10 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $parcelles = $db->query('SELECT * FROM parcelles ORDER BY nom');
 $produits = $db->query('SELECT * FROM produits_phytosanitaires ORDER BY nom');
-$interventions = $db->query('SELECT ip.*, p.nom as parcelle_nom, p.surface, p.ilot AS parcelle_ilot
+$interventions = $db->query('SELECT ip.*, p.nom as parcelle_nom, p.surface, p.ilot AS parcelle_ilot, p.parcelle AS parcelle_parcelle
                              FROM interventions_phytosanitaires ip
                              JOIN parcelles p ON ip.parcelle_id = p.id
-                             ORDER BY ip.date');
+                             ORDER BY ip.date_debut');
 
 ?>
 
@@ -179,8 +187,7 @@ endwhile; ?>
                         </select>
                     </div>
                     <div>
-                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Année
-                            culturale</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Année culturale</label>
                         <input type="number"
                             name="annee_culturale"
                             min="<?php echo date(" Y") - 1; ?>"
@@ -190,27 +197,41 @@ endwhile; ?>
                             required
                             style="width:100%;">
                     </div>
+
                     <div>
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date</label>
-                        <input type="date" name="date" value="<?php echo date('Y-m-d'); ?>" required
-                            style="width:100%;">
-                    </div>
-                    <div>
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure</label>
-                        <input type="time" name="heure" value="<?php echo date('H:i'); ?>" required style="width:100%;">
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Pourcentage réalisé de la parcelle (%)</label>
+                        <input type="text" name="pourcentage" value="100" placeholder="" required style="width:100%;">
                     </div>
 
                     <div>
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Stade</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Stade</label>
                         <input type="text" name="stade" value="" placeholder="Ex: 1er noeud" required style="width:100%;">
                     </div>
                 </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
+                    <div>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date du début de l'intervention</label>
+                        <input type="date_debut" name="date_debut" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure de début</label>
+                        <input type="time" name="heure_debut" value="<?php echo date('H:i'); ?>" required style="width:100%;">
+                    </div>
+
+                    <div>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Date de fin d'intervention</label>
+                        <input type="date_fin" name="date_fin" value="<?php echo date('Y-m-d'); ?>" required style="width:100%;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Heure de fin</label>
+                        <input type="time" name="heure_fin" value="<?php echo date('H:i'); ?>" required style="width:100%;">
+                    </div>
+
+                    
+                </div>
 
                 <div id="produits-container">
-                    <h4 style="margin-bottom: 1rem;">Produits utilisés dans ce mélange</h4>
+                    <h4 style="margin-bottom: 1rem;">Produits utilisés dans cette intervention</h4>
                     <div class="card" style="background: #f8f9fa; padding: 1rem;">
                         <div
                             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
@@ -244,8 +265,7 @@ endwhile; ?>
                 </div>
 
                 <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                    <button type="button" class="secondary" onclick="addProduit()">+ Ajouter un autre produit à ce
-                        mélange</button>
+                    <button type="button" class="secondary" onclick="addProduit()">+ Ajouter un autre produit à cette intervention</button>
                 </div>
                 <div style="margin-top: 2rem;">
                     <input type="submit" value="Enregistrer l'intervention">
@@ -261,8 +281,9 @@ endwhile; ?>
                         <tr>
                             <th>Campagne</th>
                             <th>Parcelle (Ilot)</th>
-                            <th>Date / Heure</th>
+                            <th>Date / Heure intervention</th>
                             <th>Stade</th>
+                            <th>% réalisé</th>
                             <th>Détails des produits & doses</th>
                             <th style="text-align: center;">Actions</th>
                         </tr>
@@ -278,21 +299,29 @@ endwhile; ?>
                                 <div>
                                     <?php echo htmlspecialchars_decode($intervention['parcelle_nom']); ?>
                                 </div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">Ilot:
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Ilot :
                                     <?php echo htmlspecialchars($intervention['parcelle_ilot']); ?>
+                                </div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Parcelle :
+                                    <?php echo htmlspecialchars($intervention['parcelle_parcelle']); ?>
                                 </div>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">
-                                    <?php echo date('d/m/Y', strtotime($intervention['date'])); ?>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Début :
+                                    <?php echo date('d/m/Y H:i', strtotime($intervention['date_debut'])); ?>
                                 </div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">
-                                    <?php echo date('H:i', strtotime($intervention['date'])); ?>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Fin :
+                                    <?php echo date('d/m/Y H:i', strtotime($intervention['date_fin'])); ?>
                                 </div>
                             </td>
                             <td>
                                 <div>
                                     <?php echo htmlspecialchars_decode($intervention['stade']); ?>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <?php echo htmlspecialchars_decode($intervention['pourcentage']); ?>
                                 </div>
                             </td>
                             <td>
@@ -312,7 +341,7 @@ endwhile; ?>
                                         <?php echo htmlspecialchars($detail['volume_total']); ?>
                                         <?php echo htmlspecialchars($detail['produit_unite']); ?>
                                         (<span style="color: var(--primary-color); font-weight: 600;">
-                                            <?php echo round($detail['volume_total'] / $intervention['surface'], 3); ?>
+                                            <?php echo round($detail['volume_total'] / ($intervention['surface'] * ($intervention['pourcentage'] / 100)), 3); ?>
                                             <?php echo htmlspecialchars($detail['produit_unite']); ?>/ha
                                         </span>)
                                         <br /><small style="color: var(--text-muted);">Cible:

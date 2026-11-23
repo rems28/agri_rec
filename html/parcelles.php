@@ -108,7 +108,7 @@ $parcelles = $db->query("SELECT * FROM parcelles");
     <div class="container">
         <div style="margin-bottom: 2rem;">
             <h1>Gestion des parcelles</h1>
-            <p style="color: var(--text-muted);">Répertoriez vos terres, leurs surfaces et les cultures en place.</p>
+            <p style="color: var(--text-muted);">Répertoriez vos parcelles, leurs surfaces et les cultures en place.</p>
         </div>
 
         <section class="card">
