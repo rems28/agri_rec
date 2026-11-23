@@ -334,7 +334,7 @@ else: ?>
                                 <?= htmlspecialchars($detail['produit_unite'])?>
                             </td>
                             <td>
-                                <?= htmlspecialchars($intervention['pourcentage'])?>
+                                <?= htmlspecialchars($interventions['pourcentage'])?>
                             </td>
                             <td><span style="color: var(--primary-color); font-weight: 600;">
                                     <?= round($detail['volume_total'] / ($interventions['surface'] * ($interventions['pourcentage'] / 100)), 3);?>
