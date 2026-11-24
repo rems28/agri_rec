@@ -22,9 +22,11 @@ $offset = ($page - 1) * $limit;
 $query = "
     SELECT
         ip.id AS intervention_id,
-        STRFTIME('%d/%m/%Y %H:%M', ip.date) AS date,
+        STRFTIME('%d/%m/%Y %H:%M', ip.date_debut) AS date_debut,
+        STRFTIME('%d/%m/%Y %H:%M', ip.date_fin) AS date_fin,
         ip.annee_culturale,
         ip.stade,
+        ip.pourcentage AS parcelle_pourcentage,
         p.id AS parcelle_id,
         p.nom AS parcelle_nom,
         p.parcelle AS parcelle_parcelle,
@@ -33,9 +35,9 @@ $query = "
         p.surface,
         pp.nom AS produit_nom,
         pp.unite_emballage AS produit_unite,
+        pp.type_produit AS produit_type,
         pp.amm AS produit_amm,
         dip.volume_total,
-        round((dip.volume_total / p.surface), 2) AS volume_par_ha,
         dip.cible AS cible,
         u.entity,
         u.telepac,
@@ -105,13 +107,16 @@ try {
         }
 
         $interventions[$key]['interventions'][] = [
-            'date' => $row['date'],
+            'date_debut' => $row['date_debut'],
+            'date_fin' => $row['date_fin'],
             'stade' => $row['stade'],
             'produit_nom' => $row['produit_nom'],
             'produit_unite' => $row['produit_unite'],
+            'produit_type' => $row['produit_type'],
             'produit_amm' => $row['produit_amm'],
             'volume_total' => $row['volume_total'],
-            'volume_par_ha' => $row['volume_par_ha'],
+            'surface' => $row['surface'],
+            'parcelle_pourcentage' => $row['parcelle_pourcentage'],
             'cible' => $row['cible']
         ];
     }
@@ -200,24 +205,30 @@ $total_pages = ceil($total_interventions / $limit);
                         </th>
                     </tr>
                     <tr>
-                        <th>Date</th>
-                        <th>Stade de la culture</th>
+                        <th>Date & heure de début</th>
+                        <th>Date & heure de fin</th>
+                        <th>Stade</th>
                         <th>Produit</th>
+                        <th>Type de produit</th>
                         <th>AMM</th>
                         <th>Volume total</th>
-                        <th>Volume par ha</th>
-                        <th>Cible visée</th>
+                        <th>% réalisé</th>
+                        <th>Dose/ha</th>
+                        <th>Cible</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($intervention['interventions'] as $detail) : ?>
                         <tr>
-                            <td><?php if ($detail['date'] !== $last_date) { echo htmlspecialchars($detail['date']); $last_date = $detail['date'];}  ?></td>
+                            <td><?php if ($detail['date_debut'] !== $last_date_debut) { echo htmlspecialchars($detail['date_debut']); $last_date_debut = $detail['date_debut'];}  ?></td>
+                            <td><?php if ($detail['date_fin'] !== $last_date_fin) { echo htmlspecialchars($detail['date_fin']); $last_date_fin = $detail['date_fin'];}  ?></td>
                             <td><?php if ($detail['stade'] !== $last_stade) { echo htmlspecialchars_decode($detail['stade']); $last_stade = $detail['stade'];}  ?></td>
                             <td><?= htmlspecialchars_decode($detail['produit_nom']) ?></td>
+                            <td><?= htmlspecialchars_decode($detail['produit_type']) ?></td>
                             <td><?= htmlspecialchars($detail['produit_amm']) ?></td>
                             <td><?= htmlspecialchars($detail['volume_total']) ?> <?= htmlspecialchars($detail['produit_unite']) ?></td>
-                            <td><?= htmlspecialchars($detail['volume_par_ha']) ?> <?= htmlspecialchars($detail['produit_unite']) ?></td>
+                            <td><?= htmlspecialchars($detail['pourcentage']) ?>%</td>
+                            <td><?= round($detail['volume_total'] / ($intervention['surface'] * ($detail['parcelle_pourcentage'] / 100)), 3); ?> <?= htmlspecialchars($detail['produit_unite']) ?></td>
                             <td><?= htmlspecialchars_decode($detail['cible']) ?></td>
                         </tr>
                     <?php endforeach; ?>
