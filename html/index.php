@@ -44,20 +44,26 @@ if (!isset($_SESSION["user_id"])) {
 
         <div class="dashboard-grid">
             <a autofocus href="parcelles.php" class="nav-card">
-                <h3>Gestion des parcelles</h3>
-                <p>Configurez et listez vos terrains</p>
+                <h3>Gestion des parcelles PAC</h3>
+                <p>Créez et listez vos parcelles</p>
+                <div style="margin-top: 1rem; font-weight: 600;">Accéder &rarr;</div>
+            </a>
+
+            <a autofocus href="intervenants.php" class="nav-card">
+                <h3>Gestion des intervenants externes</h3>
+                <p>Créez et listez les intervenants externes</p>
                 <div style="margin-top: 1rem; font-weight: 600;">Accéder &rarr;</div>
             </a>
 
             <a href="engrais.php" class="nav-card">
                 <h3>Catalogue d'engrais</h3>
-                <p>Catalogue des fertilisants et intrants</p>
+                <p>Créez et listez les engrais de votre ferme</p>
                 <div style="margin-top: 1rem; font-weight: 600;">Accéder &rarr;</div>
             </a>
 
             <a href="phytosanitaires.php" class="nav-card">
                 <h3>Catalogue phytosanitaire</h3>
-                <p>Inventaire des traitements et protections</p>
+                <p>Créez et listez les phytos de votre ferme</p>
                 <div style="margin-top: 1rem; font-weight: 600;">Accéder &rarr;</div>
             </a>
         </div>
