@@ -271,8 +271,7 @@ else: ?>
                     </div>
                 </div>
                 <div style="text-align: right;">
-                    <span class="badge">CAMPAGNE
-                        <?= htmlspecialchars($intervention['annee_culturale'])?>
+                    <span class="badge">CAMPAGNE <?= htmlspecialchars($intervention['annee_culturale'])?>
                     </span>
                 </div>
             </div>
@@ -302,25 +301,23 @@ else: ?>
                                 <span style="font-weight: 600;">
                                     <?= htmlspecialchars($detail['date_debut'])?>
                                 </span>
-                                <?php $last_date_debut = $detail['date_debut']; ?>
+                                <?php $last_date_debut = $detail['date_debut']; $print = '1' ?>
                                 <?php
                                     } ?>
                             </td>
                             <td>
-                                <?php if ($detail['date_fin'] !== $last_date_fin) { ?>
+                                <?php if ($print == '1') { ?>
                                 <span style="font-weight: 600;">
                                     <?= htmlspecialchars($detail['date_fin'])?>
                                 </span>
-                                <?php $last_date_fin = $detail['date_fin']; ?>
                                 <?php
                                     } ?>
                             </td>
                             <td>
-                                <?php if ($detail['stade'] !== $last_stade) { ?>
+                                <?php if ($print == '1') { ?>
                                 <span style="font-weight: 600;">
                                     <?= htmlspecialchars($detail['stade'])?>
                                 </span>
-                                <?php $last_stade = $detail['stade']; ?>
                                 <?php
                                     } ?>
                             </td>
