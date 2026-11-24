@@ -220,9 +220,9 @@ $total_pages = ceil($total_interventions / $limit);
                 <tbody>
                     <?php foreach ($intervention['interventions'] as $detail) : ?>
                         <tr>
-                            <td><?php if ($detail['date_debut'] !== $last_date_debut) { echo htmlspecialchars($detail['date_debut']); $last_date_debut = $detail['date_debut'];}  ?></td>
-                            <td><?php if ($detail['date_fin'] !== $last_date_fin) { echo htmlspecialchars($detail['date_fin']); $last_date_fin = $detail['date_fin'];}  ?></td>
-                            <td><?php if ($detail['stade'] !== $last_stade) { echo htmlspecialchars_decode($detail['stade']); $last_stade = $detail['stade'];}  ?></td>
+                            <td><?php if ($detail['date_debut'] !== $last_date_debut) { echo htmlspecialchars($detail['date_debut']); $last_date_debut = $detail['date_debut'];} $print='1'; ?></td>
+                            <td><?php if ($print == '1') { echo htmlspecialchars($detail['date_fin']);}  ?></td>
+                            <td><?php if ($print == '1') { echo htmlspecialchars_decode($detail['stade']); $print = '0';}  ?></td>
                             <td><?= htmlspecialchars_decode($detail['produit_nom']) ?></td>
                             <td><?= htmlspecialchars_decode($detail['produit_type']) ?></td>
                             <td><?= htmlspecialchars($detail['produit_amm']) ?></td>
