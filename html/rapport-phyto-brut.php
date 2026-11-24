@@ -62,7 +62,7 @@ if ($parcelle_filter) {
     $params[':parcelle_id'] = $parcelle_filter;
 }
 
-$query .= " ORDER BY ip.annee_culturale, p.nom, ip.date, pp.nom
+$query .= " ORDER BY ip.annee_culturale, p.nom, ip.date_debut, pp.nom
             LIMIT :limit OFFSET :offset";
 
 $params[':limit'] = $limit;
