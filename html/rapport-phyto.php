@@ -318,7 +318,7 @@ else: ?>
                                 <span style="font-weight: 600;">
                                     <?= htmlspecialchars($detail['stade'])?>
                                 </span>
-                                <?php
+                                <?php $print = '0';
                                     } ?>
                             </td>
                             <td style="font-weight: 500;">
