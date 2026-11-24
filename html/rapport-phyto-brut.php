@@ -227,7 +227,7 @@ $total_pages = ceil($total_interventions / $limit);
                             <td><?= htmlspecialchars_decode($detail['produit_type']) ?></td>
                             <td><?= htmlspecialchars($detail['produit_amm']) ?></td>
                             <td><?= htmlspecialchars($detail['volume_total']) ?> <?= htmlspecialchars($detail['produit_unite']) ?></td>
-                            <td><?= htmlspecialchars($detail['pourcentage']) ?>%</td>
+                            <td><?= htmlspecialchars($detail['parcelle_pourcentage']) ?>%</td>
                             <td><?= round($detail['volume_total'] / ($intervention['surface'] * ($detail['parcelle_pourcentage'] / 100)), 3); ?> <?= htmlspecialchars($detail['produit_unite']) ?></td>
                             <td><?= htmlspecialchars_decode($detail['cible']) ?></td>
                         </tr>
