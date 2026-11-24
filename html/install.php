@@ -37,6 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         date_synchro TEXT
     )");
 
+    // Création table 'intervenants externes'
+    $db->exec("CREATE TABLE IF NOT EXISTS intervenants (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nom TEXT NOT NULL,
+        siret TEXT NOT NULL
+    )");
+
     $db->exec("CREATE TABLE IF NOT EXISTS parcelles (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom TEXT NOT NULL,
