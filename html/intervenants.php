@@ -113,8 +113,8 @@ $intervenants = $db->query("SELECT * FROM intervenants");
                 </div>
                 <div>
                     <div>
-                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Culture</label>
-                        <input type="text" name="culture" placeholder="ex: Blé" required style="width:100%;">
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">SIRET</label>
+                        <input type="text" name="siret" placeholder="xxx xxx xxx xxx xxx" required style="width:100%;">
                     </div>
                 </div>
                 <div style="margin-top: 1.5rem; text-align: right; width: 100%;">
