@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $siret = clean_input($_POST["siret"]);
 
                 $stmt = $db->prepare(
-                    "INSERT INTO intervenants (nom, siret) VALUES (:nom, siret)",
+                    "INSERT INTO intervenants (nom, siret) VALUES (:nom, :siret)",
                 );
                 $stmt->bindValue(":nom", $nom, SQLITE3_TEXT);
                 $stmt->bindValue(":siret", $siret, SQLITE3_TEXT);
