@@ -139,7 +139,17 @@ $parcelles = $db->query("SELECT * FROM parcelles");
                     </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Culture</label>
-                        <input type="text" name="culture" placeholder="ex: Blé" required style="width:100%;">
+                        <input type="text" id="culture" name="culture" placeholder="ex: Blé" required style="width:100%;"
+                            onkeyup="if(this.value.length>=2)this.setAttribute('list','listecultures');"
+                            onkeydown="if(this.value.length<2||event.keyCode==8)this.removeAttribute('list');"
+                            onblur="fillFromCulture()" />
+                        <datalist id="listecultures">
+                            <?php
+                            foreach ($listecultures as $nomculture) {
+                                echo "<option value='" . htmlspecialchars($nomculture) . "'>" . htmlspecialchars_decode($nomculture) . "</option>";
+                            }
+                            ?>
+                        </datalist>
                     </div>
                 </div>
                 <div style="margin-top: 1.5rem; text-align: right; width: 100%;">
@@ -250,6 +260,18 @@ endwhile; ?>
 
         function hideUpdateForm() {
             document.getElementById('updateFormBackdrop').style.display = 'none';
+        }
+
+        function fillFromCulture() {
+            const culture = document.getElementById('culture').value;
+            const datalist = document.getElementById('listecultures');
+
+            const produit = Array.from(datalist.options).find(
+                option => option.value === culture
+            );
+            if (!produit) {
+                return;
+            }
         }
     </script>
 </body>
