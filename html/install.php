@@ -92,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         pourcentage REAL NOT NULL,
         annee_culturale INTEGER NOT NULL,
         stade TEXT NOT NULL,
+        intervenant_id INTEGER,
+        FOREIGN KEY (intervenant_id REFERENCES intervenants(id)
         FOREIGN KEY (parcelle_id) REFERENCES parcelles(id)
     )");
 

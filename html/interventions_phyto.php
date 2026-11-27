@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $annee_culturale = intval($_POST['annee_culturale']);
                 $pourcentage = intval($_POST['pourcentage']);
                 $stade = clean_input($_POST['stade']);
+                $intervenant_id = intval($_POST['intervenant_id']);
                 $date_debut = clean_input($_POST['date_debut']);
                 $heure_debut = clean_input($_POST['heure_debut']);
                 $date_fin = clean_input($_POST['date_fin']);
@@ -33,11 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $db->exec('BEGIN TRANSACTION');
 
-                $stmt = $db->prepare('INSERT INTO interventions_phytosanitaires (parcelle_id, annee_culturale, pourcentage, stade, date_debut, date_fin) VALUES (:parcelle_id, :annee_culturale, :pourcentage, :stade, :date_debut, :date_fin)');
+                $stmt = $db->prepare('INSERT INTO interventions_phytosanitaires (parcelle_id, annee_culturale, pourcentage, stade, intervenant_id, date_debut, date_fin) VALUES (:parcelle_id, :annee_culturale, :pourcentage, :stade, :intervenant_id, :date_debut, :date_fin)');
                 $stmt->bindValue(':parcelle_id', $parcelle_id, SQLITE3_INTEGER);
                 $stmt->bindValue(':annee_culturale', $annee_culturale, SQLITE3_INTEGER);
                 $stmt->bindValue(':pourcentage', $pourcentage, SQLITE3_FLOAT);
                 $stmt->bindValue(':stade', $stade, SQLITE3_TEXT);
+                $stmt->bindValue(':intervenant_id', $intervenant_id, SQLITE3_INTEGER);
                 $stmt->bindValue(':date_debut', $datetime_debut, SQLITE3_TEXT);
                 $stmt->bindValue(':date_fin', $datetime_fin, SQLITE3_TEXT);
                 $stmt->execute();
@@ -81,9 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $parcelles = $db->query('SELECT * FROM parcelles ORDER BY nom');
 $produits = $db->query('SELECT * FROM produits_phytosanitaires ORDER BY nom');
-$interventions = $db->query('SELECT ip.*, p.nom as parcelle_nom, p.surface, p.ilot AS parcelle_ilot, p.parcelle AS parcelle_parcelle
+$intervenants = $db->query('SELECT * FROM intervenants ORDER BY nom');
+$interventions = $db->query('SELECT ip.*, p.nom as parcelle_nom, p.surface, p.ilot AS parcelle_ilot, p.parcelle AS parcelle_parcelle, i.nom AS intervenant_nom,
                              FROM interventions_phytosanitaires ip
                              JOIN parcelles p ON ip.parcelle_id = p.id
+                             JOIN intervenants i on ip.intervenant_id = i.id
                              ORDER BY ip.date_debut');
 
 ?>
@@ -200,7 +204,21 @@ endwhile; ?>
                             required
                             style="width:100%;">
                     </div>
-
+                        <div>
+                        <label
+                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Intervenant externe</label>
+                        <select name="intervenant_id" style="width:auto;">
+                            <option value="" disabled selected>Choisir un intervenant (Optionnel)</option>
+                            <?php
+$intervenants->reset();
+while ($intervenant = $intervenants->fetchArray(SQLITE3_ASSOC)): ?>
+                            <option value="<?php echo $intervenant['id']; ?>">
+                                <?php echo htmlspecialchars_decode($intervenant['nom']); ?>
+                            </option>
+                            <?php
+endwhile; ?>
+                        </select>
+                    </div>
                     <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Pourcentage réalisé de la parcelle (%)</label>
                         <input type="text" name="pourcentage" value="100" placeholder="" required style="width:100%;">
@@ -231,6 +249,10 @@ endwhile; ?>
                     </div>
 
                     
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
+
                 </div>
 
                 <div id="produits-container">
@@ -286,6 +308,7 @@ endwhile; ?>
                             <th>Parcelle</th>
                             <th>Date / Heure</th>
                             <th>Stade</th>
+                            <th>Intervenant</th>
                             <th>% réalisé</th>
                             <th>Détail intervention</th>
                             <th style="text-align: center;">Actions</th>
@@ -320,6 +343,11 @@ endwhile; ?>
                             <td>
                                 <div>
                                     <?php echo htmlspecialchars_decode($intervention['stade']); ?>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <?php echo htmlspecialchars_decode($intervention['intervenant_nom']); ?>
                                 </div>
                             </td>
                             <td>
