@@ -119,7 +119,7 @@ $produits->reset();
 while ($produit = $produits->fetchArray(SQLITE3_ASSOC)):
 ?>
                                 <option value="<?php echo $produit['id']; ?>"><?php echo htmlspecialchars_decode($produit['nom']); ?>
-                                <?php if ($produit['unite'] !== '') { ?> (<?php echo htmlspecialchars_decode($produit['unite_emballage']); ?>) <?php } ?>
+                                <?php if ($produit['unite_emballage'] !== '') { ?> (<?php echo htmlspecialchars_decode($produit['unite_emballage']); ?>) <?php } ?>
                                 </option>
                             <?php
 endwhile; ?>
@@ -265,7 +265,7 @@ $produits->reset();
 while ($produit = $produits->fetchArray(SQLITE3_ASSOC)): ?>
                                     <option value="<?php echo $produit['id']; ?>">
                                         <?php echo htmlspecialchars_decode($produit['nom']); ?>
-                                        <?php if ($produit['unite'] !== '') { ?> (<?php echo htmlspecialchars_decode($produit['unite_emballage']); ?>) <?php } ?>
+                                        <?php if ($produit['unite_emballage'] !== '') { ?> (<?php echo htmlspecialchars_decode($produit['unite_emballage']); ?>) <?php } ?>
                                     </option>
                                     <?php
 endwhile; ?>
