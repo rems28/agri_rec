@@ -178,8 +178,7 @@ endwhile; ?>
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
                     <div>
-                        <label
-                            style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Parcelle</label>
+                        <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Parcelle</label>
                         <select name="parcelle_id" required style="width:100%;" autofocus>
                             <option value="" disabled selected>Choisir une parcelle</option>
                             <?php
@@ -232,8 +231,8 @@ endwhile; ?>
                         <input type="time" id="heure_fin" name="heure_fin" value="<?php echo date('H:i'); ?>" required style="width:100%;">
                     </div>                
                 </div>
-                <div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
+                    <div>
                         <label style="display:block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem;">Intervenant externe</label>
                         <select name="intervenant_id" style="width:auto;">
                             <option value="" disabled selected>Choisir un intervenant (Optionnel)</option>
